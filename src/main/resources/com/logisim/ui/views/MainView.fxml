@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<BorderPane
+    xmlns="http://javafx.com/javafx/21"
+    xmlns:fx="http://javafx.com/fxml/1"
+    fx:controller="com.logisim.ui.controllers.MainViewController"
+>
+
+    <!-- Left sidebar -->
+    <left>
+        <VBox
+            fx:id="sidebar"
+            spacing="10"
+            style="-fx-padding: 10; -fx-background-color: #f0f0f0;"
+        >
+            <Label text="Components" />
+            <Button text="AND" fx:id="btnAnd" />
+            <Button text="OR" fx:id="btnOr" />
+            <Button text="NOT" fx:id="btnNot" />
+        </VBox>
+    </left>
+
+    <!-- Center canvas -->
+    <center>
+        <ScrollPane fx:id="canvasScrollPane" pannable="true">
+            <Pane
+                fx:id="canvasPane"
+                prefWidth="800"
+                prefHeight="600"
+                style="-fx-background-color: #000000;"
+            >
+                <!-- Components will be added here dynamically -->
+            </Pane>
+        </ScrollPane>
+    </center>
+
+    <top>
+        <ToolBar>
+            <Button text="Run Simulation" />
+            <Button text="Analyze" />
+        </ToolBar>
+    </top>
+
+</BorderPane>

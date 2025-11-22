@@ -1,0 +1,26 @@
+package com.logisim.business;
+
+public class And extends Component {
+
+    public And() {
+        name = "AndGate";
+        inputs = new boolean[2];
+        outputs = new boolean[1];
+        positionX = 0;
+        positionY = 0;
+        inputs[0] = false;
+        inputs[1] = false;
+        outputs[0] = false;
+    }
+
+    public boolean getOutput() {
+        return super.getOutput(0);
+    }
+
+    @Override
+    public void execute() {
+        if (inputs[0] && inputs[1]) {
+            outputs[0] = true;
+        } else outputs[0] = false;
+    }
+}
