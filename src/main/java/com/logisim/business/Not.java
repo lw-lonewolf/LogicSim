@@ -6,8 +6,8 @@ public class Not extends Component {
         name = "NotGate";
         inputs = new boolean[1];
         outputs = new boolean[1];
-        positionX = 0;
-        positionY = 0;
+        positionX = 100;
+        positionY = 100;
         inputs[0] = false;
         outputs[0] = true;
     }

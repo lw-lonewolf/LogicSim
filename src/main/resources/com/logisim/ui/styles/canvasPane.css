@@ -1,0 +1,19 @@
+.context-menu {
+    -fx-background-color: #2b2b2b;
+    background-color: #2b2b2b;
+    -fx-background-radius: 6px;
+}
+
+.menu-item {
+    -fx-background-radius: 4px;
+}
+
+.menu-item .label {
+    -fx-text-fill: white;
+    font-size: 9px;
+}
+
+.menu-item:focused {
+    -fx-background-color: #3c3f41;
+    background-color: #3c3f41;
+}

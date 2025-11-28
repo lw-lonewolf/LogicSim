@@ -1,0 +1,112 @@
+/* =============================================================================
+   1. GLOBAL RESET & BASE
+   ============================================================================= */
+.root {
+    -fx-background-color: #1e1e1e; /* Deep dark background */
+    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    -fx-font-size: 14px;
+}
+
+/* =============================================================================
+   2. START SCREEN CARD (The central box)
+   ============================================================================= */
+.start-card {
+    -fx-background-color: #252526;
+    -fx-background-radius: 8;
+    -fx-border-color: #3e3e42;
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    /* Soft shadow for depth */
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.4), 20, 0, 0, 10);
+    -fx-padding: 40;
+}
+
+/* =============================================================================
+   3. TYPOGRAPHY
+   ============================================================================= */
+.title-label {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff;
+}
+
+.subtitle-label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #858585; /* Muted gray */
+}
+
+.version-label {
+    -fx-font-size: 12px;
+    -fx-text-fill: #4d4d4d;
+}
+
+.separator-line {
+    -fx-stroke: #3e3e42;
+    -fx-stroke-width: 2;
+}
+
+/* =============================================================================
+   4. BUTTONS
+   ============================================================================= */
+.button {
+    -fx-cursor: hand;
+    -fx-background-radius: 4;
+    -fx-padding: 10 20;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+/* Primary Action (New Project) - VS Code Blue */
+.button-primary {
+    -fx-background-color: #007acc;
+}
+.button-primary:hover {
+    -fx-background-color: #0098ff; /* Lighter blue on hover */
+}
+.button-primary:pressed {
+    -fx-background-color: #005f9e; /* Darker blue on click */
+}
+
+/* Secondary Action (Load Project) - Dark Gray */
+.button-secondary {
+    -fx-background-color: #3e3e42;
+    -fx-border-color: #3e3e42;
+}
+.button-secondary:hover {
+    -fx-background-color: #4e4e52;
+}
+.button-secondary:pressed {
+    -fx-background-color: #2d2d30;
+}
+
+/* =============================================================================
+   5. DIALOGS (New Project Popups)
+   ============================================================================= */
+.dialog-pane {
+    -fx-background-color: #252526;
+}
+
+.dialog-pane .header-panel {
+    -fx-background-color: #1e1e1e;
+    -fx-border-color: #3e3e42;
+    -fx-border-width: 0 0 1 0; /* Bottom border only */
+}
+
+.dialog-pane .label {
+    -fx-text-fill: white;
+}
+
+/* Input Fields inside Dialogs */
+.text-field {
+    -fx-background-color: #3c3c3c;
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: #858585;
+    -fx-background-radius: 2;
+    -fx-border-color: #007acc;
+    -fx-border-width: 0 0 1 0; /* Underline style */
+}
+
+.text-field:focused {
+    -fx-background-color: #454545;
+    -fx-border-width: 0 0 2 0;
+}

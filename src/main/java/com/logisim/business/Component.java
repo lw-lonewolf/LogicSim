@@ -17,4 +17,44 @@ public abstract class Component {
     }
 
     public abstract void execute();
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public boolean[] getInputs() {
+        return inputs;
+    }
+
+    public void setInputs(boolean[] inputs) {
+        this.inputs = inputs;
+    }
+
+    public boolean[] getOutputs() {
+        return outputs;
+    }
+
+    public void setOutputs(boolean[] outputs) {
+        this.outputs = outputs;
+    }
+
+    public int getPositionX() {
+        return positionX;
+    }
+
+    public void setPositionX(int positionX) {
+        this.positionX = positionX;
+    }
+
+    public int getPositionY() {
+        return positionY;
+    }
+
+    public void setPositionY(int positionY) {
+        this.positionY = positionY;
+    }
 }
