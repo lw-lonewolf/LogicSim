@@ -2,7 +2,6 @@ package com.logisim.ui.components;
 
 import com.logisim.domain.Connector;
 import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
@@ -89,10 +88,11 @@ public class Wire extends Polyline {
         MenuItem deleteWire = new MenuItem("Delete Wire");
         deleteWire.setOnAction(e -> {
             if (getParent() != null) {
+                this.sink.setConnectionState(false);
                 ((Pane) getParent()).getChildren().remove(this);
+                Connector c = (Connector) this.getUserData();
+                //TODO: add logic to rmeove this connector from circuit
             }
-            Connector c = (Connector) this.getUserData();
-            //TODO: add logic to rmeove this connector from circuit
         });
 
         menu

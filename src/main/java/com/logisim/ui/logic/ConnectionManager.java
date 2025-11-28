@@ -4,7 +4,6 @@ import com.logisim.domain.Connector;
 import com.logisim.domain.components.Component;
 import com.logisim.ui.components.Port;
 import com.logisim.ui.components.Wire;
-import java.sql.Connection;
 import javafx.scene.layout.Pane;
 
 public class ConnectionManager {
@@ -17,14 +16,11 @@ public class ConnectionManager {
     }
 
     public void handlePortClick(Port clickedPort) {
-        // DEBUG: Print what we just clicked
         System.out.println(
             "Clicked Port type: " + (clickedPort.isInput() ? "INPUT" : "OUTPUT")
         );
 
-        // CASE 1: NO SELECTION YET (We want to start a wire)
         if (selectedSourcePort == null) {
-            // LOGIC: A wire must start from an OUTPUT (Source)
             if (clickedPort.isInput() == false) {
                 selectedSourcePort = clickedPort;
                 selectedSourcePort.setSelected(true);
@@ -34,19 +30,23 @@ public class ConnectionManager {
                     "X Cannot start connection from an Input port."
                 );
             }
-        }
-        // CASE 2: SOURCE SELECTED (We want to finish the wire)
-        else {
-            // LOGIC: A wire must end at an INPUT (Sink)
+        } else {
             if (clickedPort.isInput() == true) {
-                // VALIDATION: Cannot connect to the exact same gate (loops)
+                if (clickedPort.getConnectionState()) {
+                    System.out.println(
+                        "Connection Failed: Input Port is in use."
+                    );
+                    cancelSelection();
+                    return;
+                }
+
                 if (
                     clickedPort.getParentGate() !=
                     selectedSourcePort.getParentGate()
                 ) {
                     createConnection(selectedSourcePort, clickedPort);
+                    clickedPort.setConnectionState(true);
 
-                    // SUCCESS: Clear selection
                     selectedSourcePort.setSelected(false);
                     selectedSourcePort = null;
                     System.out.println(">>> Connection CREATED successfully.");
@@ -55,11 +55,9 @@ public class ConnectionManager {
                     cancelSelection();
                 }
             } else {
-                // User clicked Output -> Output. This is invalid.
                 System.out.println(
                     "X Connection Failed: You must connect Output to Input."
                 );
-                // Optional: Cancel selection if they click wrong
                 cancelSelection();
             }
         }

@@ -8,6 +8,7 @@ public class Port extends Circle {
 
     private boolean isInput;
     private boolean selected;
+    private boolean connectionState = false;
     private int index;
     private StackPane parentGate;
 
@@ -27,6 +28,14 @@ public class Port extends Circle {
 
     public boolean isInput() {
         return isInput;
+    }
+
+    public boolean getConnectionState() {
+        return connectionState;
+    }
+
+    public void setConnectionState(boolean value) {
+        connectionState = value;
     }
 
     public void setSelected(boolean value) {
