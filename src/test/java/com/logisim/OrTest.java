@@ -2,7 +2,7 @@ package com.logisim;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.logisim.business.Or;
+import com.logisim.domain.components.Or;
 import org.junit.jupiter.api.Test;
 
 class OrTest {

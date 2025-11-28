@@ -1,6 +1,6 @@
 package com.logisim.ui.controllers;
 
-import com.logisim.business.Project;
+import com.logisim.domain.Project;
 import java.io.File;
 import java.io.IOException;
 import java.util.Optional;

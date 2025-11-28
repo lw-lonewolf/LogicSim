@@ -2,7 +2,7 @@ package com.logisim;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.logisim.business.Not;
+import com.logisim.domain.components.Not;
 import org.junit.jupiter.api.Test;
 
 class NotTest {

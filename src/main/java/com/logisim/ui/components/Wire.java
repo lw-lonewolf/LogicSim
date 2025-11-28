@@ -1,6 +1,6 @@
-package com.logisim.ui.model;
+package com.logisim.ui.components;
 
-import com.logisim.business.Connector;
+import com.logisim.domain.Connector;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;

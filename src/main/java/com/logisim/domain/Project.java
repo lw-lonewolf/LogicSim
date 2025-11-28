@@ -1,4 +1,4 @@
-package com.logisim.business;
+package com.logisim.domain;
 
 import java.util.ArrayList;
 import java.util.List;

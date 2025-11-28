@@ -1,8 +1,8 @@
-package com.logisim.ui.controllers;
+package com.logisim.ui.components;
 
-import com.logisim.business.Component;
-import com.logisim.ui.model.ConnectionManager;
-import com.logisim.ui.model.Port;
+import com.logisim.domain.components.Component;
+import com.logisim.ui.controllers.GridController;
+import com.logisim.ui.logic.ConnectionManager;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
@@ -13,7 +13,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-public class GateController {
+public class GateFactory {
 
     private static ConnectionManager connectionManager;
     private static final double GATE_VISUAL_SIZE = 100.0;
@@ -52,7 +52,7 @@ public class GateController {
 
     private static ImageView createGate(String gateName, double x, double y) {
         String path = "/com/logisim/ui/images/" + gateName + ".png";
-        Image image = new Image(GateController.class.getResourceAsStream(path));
+        Image image = new Image(GateFactory.class.getResourceAsStream(path));
         ImageView imageView = new ImageView(image);
         imageView.setLayoutX(x);
         imageView.setLayoutY(y);

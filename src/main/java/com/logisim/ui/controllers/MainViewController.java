@@ -1,12 +1,13 @@
 package com.logisim.ui.controllers;
 
-import com.logisim.business.And;
-import com.logisim.business.Component;
-import com.logisim.business.Not;
-import com.logisim.business.Or;
-import com.logisim.business.Project;
-import com.logisim.helper.SafePoints;
-import com.logisim.ui.model.ConnectionManager;
+import com.logisim.domain.Project;
+import com.logisim.domain.components.And;
+import com.logisim.domain.components.Component;
+import com.logisim.domain.components.Not;
+import com.logisim.domain.components.Or;
+import com.logisim.ui.components.GateFactory;
+import com.logisim.ui.logic.ConnectionManager;
+import com.logisim.ui.logic.SafePoints;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
@@ -43,7 +44,7 @@ public class MainViewController {
         gridController = new GridController(gridCanvas, gridSize);
 
         ConnectionManager connectionManager = new ConnectionManager(canvasPane);
-        GateController.setConnectionManager(connectionManager);
+        GateFactory.setConnectionManager(connectionManager);
 
         btnAnd.setOnAction(e -> {
             Point2D pos = SafePoints.getSafeSpawnPoint(
@@ -52,7 +53,7 @@ public class MainViewController {
                 gridSize
             );
             Component comp = new And();
-            StackPane gate = GateController.createGateWithHitBox(
+            StackPane gate = GateFactory.createGateWithHitBox(
                 "and",
                 pos.getX(),
                 pos.getY(),
@@ -70,7 +71,7 @@ public class MainViewController {
                 gridSize
             );
             Component comp = new Not();
-            StackPane gate = GateController.createGateWithHitBox(
+            StackPane gate = GateFactory.createGateWithHitBox(
                 "not",
                 pos.getX(),
                 pos.getY(),
@@ -88,7 +89,7 @@ public class MainViewController {
                 gridSize
             );
             Component comp = new Or();
-            StackPane gate = GateController.createGateWithHitBox(
+            StackPane gate = GateFactory.createGateWithHitBox(
                 "or",
                 pos.getX(),
                 pos.getY(),

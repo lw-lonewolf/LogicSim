@@ -1,4 +1,4 @@
-package com.logisim.ui.model;
+package com.logisim.ui.components;
 
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;

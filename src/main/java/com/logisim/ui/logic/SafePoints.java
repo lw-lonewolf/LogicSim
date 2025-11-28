@@ -1,4 +1,4 @@
-package com.logisim.helper;
+package com.logisim.ui.logic;
 
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;

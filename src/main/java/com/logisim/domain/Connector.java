@@ -1,4 +1,6 @@
-package com.logisim.business;
+package com.logisim.domain;
+
+import com.logisim.domain.components.Component;
 
 public class Connector {
 

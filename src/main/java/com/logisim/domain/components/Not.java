@@ -1,4 +1,4 @@
-package com.logisim.business;
+package com.logisim.domain.components;
 
 public class Not extends Component {
 

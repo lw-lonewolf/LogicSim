@@ -1,7 +1,9 @@
-package com.logisim.ui.model;
+package com.logisim.ui.logic;
 
-import com.logisim.business.Component;
-import com.logisim.business.Connector;
+import com.logisim.domain.Connector;
+import com.logisim.domain.components.Component;
+import com.logisim.ui.components.Port;
+import com.logisim.ui.components.Wire;
 import java.sql.Connection;
 import javafx.scene.layout.Pane;
 

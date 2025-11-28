@@ -2,11 +2,11 @@ package com.logisim;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.logisim.business.And;
-import com.logisim.business.Circuit;
-import com.logisim.business.Component;
-import com.logisim.business.Connector;
-import com.logisim.business.Or;
+import com.logisim.domain.Circuit;
+import com.logisim.domain.Connector;
+import com.logisim.domain.components.And;
+import com.logisim.domain.components.Component;
+import com.logisim.domain.components.Or;
 import java.security.InvalidParameterException;
 import java.util.Arrays;
 import java.util.List;

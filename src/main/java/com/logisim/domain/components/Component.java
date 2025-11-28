@@ -1,4 +1,4 @@
-package com.logisim.business;
+package com.logisim.domain.components;
 
 public abstract class Component {
 

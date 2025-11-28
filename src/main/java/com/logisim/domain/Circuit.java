@@ -1,5 +1,6 @@
-package com.logisim.business;
+package com.logisim.domain;
 
+import com.logisim.domain.components.Component;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
@@ -61,8 +62,8 @@ public class Circuit {
             );
         } else if (
             (source < 0 ||
-                source >= components.get(sourceComp).inputs.length) ||
-            (sink < 0 || sink >= components.get(sinkComp).inputs.length)
+                source >= components.get(sourceComp).getInputs().length) ||
+            (sink < 0 || sink >= components.get(sinkComp).getInputs().length)
         ) {
             throw new InvalidParameterException(
                 "source pin or sink pin doesn't exist"
@@ -105,7 +106,7 @@ public class Circuit {
         List<Component> inputComponents = new ArrayList<>();
         List<Integer> inputIndices = new ArrayList<>();
         for (Component comp : components) {
-            for (int i = 0; i < comp.inputs.length; i++) {
+            for (int i = 0; i < comp.getInputs().length; i++) {
                 boolean connectedAsSink = false;
                 for (Connector conn : connectors) {
                     if (conn.sinkComp == comp && conn.sink == i) {
@@ -123,7 +124,7 @@ public class Circuit {
         List<Component> outputComponents = new ArrayList<>();
         List<Integer> outputIndices = new ArrayList<>();
         for (Component comp : components) {
-            for (int i = 0; i < comp.outputs.length; i++) {
+            for (int i = 0; i < comp.getOutputs().length; i++) {
                 boolean connectedAsSource = false;
                 for (Connector conn : connectors) {
                     if (conn.sourceComp == comp && conn.source == i) {
