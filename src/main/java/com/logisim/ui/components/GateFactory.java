@@ -135,6 +135,13 @@ public class GateFactory {
                 gridController.getGridSize();
             node.setLayoutX(newX);
             node.setLayoutY(newY);
+
+            Component comp = (Component) node.getUserData();
+            if (comp != null) {
+                comp.setPositionX(newX);
+                comp.setPositionY(newY);
+            }
+
             event.consume();
         });
 

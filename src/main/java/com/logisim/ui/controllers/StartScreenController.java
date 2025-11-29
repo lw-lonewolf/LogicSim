@@ -1,65 +1,88 @@
 package com.logisim.ui.controllers;
 
+import com.logisim.data.ProjectDAO;
 import com.logisim.domain.Project;
-import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.TextInputDialog;
-import javafx.stage.DirectoryChooser;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public class StartScreenController {
+
+    @FXML
+    private Button btnNewProject;
+
+    @FXML
+    private Button btnLoadProject;
+
+    @FXML
+    public void initialize() {
+        btnNewProject.getStyleClass().addAll("button", "button-primary");
+        btnLoadProject.getStyleClass().addAll("button", "button-secondary");
+    }
 
     @FXML
     private void handleNewProject() {
         TextInputDialog dialog = new TextInputDialog("New Circuit");
         dialog.setTitle("New Project");
         dialog.setHeaderText("Create a New Project");
-        dialog.setContentText("Project Name:");
+        dialog.setContentText("Enter Project Name:");
 
-        dialog.getDialogPane().setStyle("-fx-background-color: #2b2b2b;");
-        dialog.getDialogPane().getStyleClass().add("dark-dialog");
+        styleDialog(dialog.getDialogPane());
 
         Optional<String> result = dialog.showAndWait();
 
-        if (result.isPresent()) {
-            String name = result.get();
+        if (result.isPresent() && !result.get().trim().isEmpty()) {
+            String name = result.get().trim();
 
-            DirectoryChooser directoryChooser = new DirectoryChooser();
-            directoryChooser.setTitle("Select Project Folder");
-            File selectedDirectory = directoryChooser.showDialog(null);
+            Project newProject = new Project(name);
+            newProject.save();
 
-            if (selectedDirectory != null) {
-                Project newProject = new Project(
-                    name,
-                    selectedDirectory.getAbsolutePath()
-                );
-
-                loadMainEditor(newProject);
-            }
+            loadMainEditor(newProject);
         }
     }
 
     @FXML
     private void handleLoadProject() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Open Project File");
+        ProjectDAO dao = new ProjectDAO();
+        List<Project> projects = dao.getAllProjects();
 
-        File file = fileChooser.showOpenDialog(null);
-        if (file != null) {
-            Project loadedProject = new Project(
-                "Loaded Project",
-                file.getParent()
+        if (projects.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("No Projects");
+            alert.setHeaderText(null);
+            alert.setContentText(
+                "No projects found in the database. Create one first!"
             );
-            loadedProject.load();
+            styleDialog(alert.getDialogPane());
+            alert.showAndWait();
+            return;
+        }
 
-            loadMainEditor(loadedProject);
+        ChoiceDialog<Project> dialog = new ChoiceDialog<>(
+            projects.get(0),
+            projects
+        );
+        dialog.setTitle("Open Project");
+        dialog.setHeaderText("Select a Project to Load");
+        dialog.setContentText("Project:");
+
+        styleDialog(dialog.getDialogPane());
+
+        Optional<Project> result = dialog.showAndWait();
+
+        if (result.isPresent()) {
+            Project selectedProject = result.get();
+            // TODO: load Circuits/Components for this project here
+            loadMainEditor(selectedProject);
         }
     }
 
@@ -68,14 +91,12 @@ public class StartScreenController {
             FXMLLoader loader = new FXMLLoader(
                 getClass().getResource("/com/logisim/ui/views/MainView.fxml")
             );
-
             Parent root = loader.load();
 
             MainViewController mainController = loader.getController();
             mainController.setCurrentProject(project);
 
             Stage stage = (Stage) btnNewProject.getScene().getWindow();
-
             Scene scene = new Scene(root);
             scene
                 .getStylesheets()
@@ -84,20 +105,24 @@ public class StartScreenController {
                         .getResource("/com/logisim/ui/styles/canvasPane.css")
                         .toExternalForm()
                 );
+
             stage.setScene(scene);
-            stage.setTitle("Logisim - " + project.getName());
+            stage.setTitle("Logisim Clone - " + project.getName());
             stage.setMaximized(true);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("Could not load editor");
-            alert.setContentText(e.getMessage());
-            alert.showAndWait();
         }
     }
 
-    @FXML
-    private javafx.scene.control.Button btnNewProject;
+    private void styleDialog(javafx.scene.control.DialogPane dialogPane) {
+        dialogPane
+            .getStylesheets()
+            .add(
+                getClass()
+                    .getResource("/com/logisim/ui/styles/application.css")
+                    .toExternalForm()
+            );
+        dialogPane.getStyleClass().add("dialog-pane");
+    }
 }

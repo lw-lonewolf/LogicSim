@@ -1,12 +1,22 @@
 package com.logisim.domain.components;
 
+import java.util.UUID;
+
 public abstract class Component {
 
     protected String name;
     protected boolean[] inputs;
     protected boolean[] outputs;
-    protected int positionX;
-    protected int positionY;
+    protected double positionX;
+    protected double positionY;
+
+    private String uuid;
+
+    public abstract void execute();
+
+    public Component() {
+        this.uuid = UUID.randomUUID().toString();
+    }
 
     public void setInput(int index, boolean value) {
         inputs[index] = value;
@@ -15,8 +25,6 @@ public abstract class Component {
     public boolean getOutput(int index) {
         return outputs[index];
     }
-
-    public abstract void execute();
 
     public String getName() {
         return name;
@@ -42,19 +50,27 @@ public abstract class Component {
         this.outputs = outputs;
     }
 
-    public int getPositionX() {
+    public double getPositionX() {
         return positionX;
     }
 
-    public void setPositionX(int positionX) {
-        this.positionX = positionX;
-    }
-
-    public int getPositionY() {
+    public double getPositionY() {
         return positionY;
     }
 
-    public void setPositionY(int positionY) {
+    public void setPositionX(double positionX) {
+        this.positionX = positionX;
+    }
+
+    public void setPositionY(double positionY) {
         this.positionY = positionY;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 }
