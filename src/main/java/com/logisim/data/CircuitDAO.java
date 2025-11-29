@@ -3,9 +3,11 @@ package com.logisim.data;
 import com.logisim.domain.Circuit;
 import com.logisim.domain.Connector;
 import com.logisim.domain.components.And;
+import com.logisim.domain.components.Bulb;
 import com.logisim.domain.components.Component;
 import com.logisim.domain.components.Not;
 import com.logisim.domain.components.Or;
+import com.logisim.domain.components.Switch;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -144,6 +146,8 @@ public class CircuitDAO {
                     case "and" -> new And();
                     case "or" -> new Or();
                     case "not" -> new Not();
+                    case "switch" -> new Switch();
+                    case "bulb" -> new Bulb();
                     default -> null;
                 };
 

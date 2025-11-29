@@ -1,8 +1,11 @@
 package com.logisim.ui.components;
 
+import com.logisim.domain.components.Bulb;
 import com.logisim.domain.components.Component;
+import com.logisim.domain.components.Switch;
 import com.logisim.ui.controllers.GridController;
 import com.logisim.ui.logic.ConnectionManager;
+import java.util.function.Consumer;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
@@ -33,9 +36,37 @@ public class GateFactory {
         double y,
         Pane canvasPane,
         GridController gridController,
-        Component component
+        Component component,
+        Consumer<StackPane> onDeleteAction,
+        Consumer<StackPane> onToggleAction
     ) {
-        ImageView imageView = createGate(gateName, x, y);
+        String imagePath;
+        if (component instanceof Switch) {
+            imagePath = "/com/logisim/ui/images/switch_off.png";
+
+            if (((com.logisim.domain.components.Switch) component).isOn()) {
+                imagePath = "/com/logisim/ui/images/switch_on.png";
+            }
+        } else if (component instanceof Bulb) {
+            imagePath = "/com/logisim/ui/images/bulb_off.png";
+
+            if (((com.logisim.domain.components.Bulb) component).isOn()) {
+                imagePath = "/com/logisim/ui/images/bulb_on.png";
+            }
+        } else {
+            imagePath =
+                "/com/logisim/ui/images/" + gateName.toLowerCase() + ".png";
+        }
+
+        Image image = new Image(
+            GateFactory.class.getResourceAsStream(imagePath)
+        );
+        ImageView imageView = new ImageView(image);
+        imageView.setLayoutX(x);
+        imageView.setLayoutY(y);
+        imageView.setPreserveRatio(true);
+        imageView.setFitWidth(GATE_VISUAL_SIZE);
+        imageView.setFitHeight(GATE_VISUAL_SIZE);
         Rectangle hitbox = new Rectangle(
             imageView.getFitWidth(),
             imageView.getFitHeight()
@@ -46,25 +77,53 @@ public class GateFactory {
         stack.setLayoutY(y);
         stack.setUserData(component);
         addPortsToGate(stack);
-        makeDraggableandDeletable(stack, canvasPane, gridController);
+        makeDraggableandDeletable(
+            stack,
+            canvasPane,
+            gridController,
+            onDeleteAction
+        );
+        if (component instanceof Switch) {
+            setupSwitchInteraction(
+                stack,
+                imageView,
+                (Switch) component,
+                onToggleAction
+            );
+        }
         return stack;
     }
 
-    private static ImageView createGate(String gateName, double x, double y) {
-        String path = "/com/logisim/ui/images/" + gateName + ".png";
-        Image image = new Image(GateFactory.class.getResourceAsStream(path));
-        ImageView imageView = new ImageView(image);
-        imageView.setLayoutX(x);
-        imageView.setLayoutY(y);
-        imageView.setPreserveRatio(true);
-        imageView.setFitWidth(GATE_VISUAL_SIZE);
-        imageView.setFitHeight(GATE_VISUAL_SIZE);
-        return imageView;
+    private static void setupSwitchInteraction(
+        StackPane stack,
+        ImageView view,
+        Switch switchLogic,
+        Consumer<StackPane> onToggleAction
+    ) {
+        stack.setOnMouseClicked(e -> {
+            if (e.isStillSincePress()) {
+                switchLogic.toggle();
+            }
+
+            String newImage = switchLogic.isOn()
+                ? "switch_on.png"
+                : "switch_off.png";
+
+            String path = "/com/logisim/ui/images/" + newImage;
+            view.setImage(
+                new Image(GateFactory.class.getResourceAsStream(path))
+            );
+            System.out.println("Switch toggled:" + switchLogic.isOn());
+            if (onToggleAction != null) {
+                onToggleAction.accept(stack);
+            }
+        });
     }
 
     private static void addPortsToGate(StackPane stack) {
         Component comp = (Component) stack.getUserData();
         int inputCount = comp.getInputs().length;
+        int outputCount = comp.getOutputs().length;
 
         double halfSize = GATE_VISUAL_SIZE / 2.0;
 
@@ -83,14 +142,14 @@ public class GateFactory {
             configurePortEvents(inputPort);
             stack.getChildren().add(inputPort);
         }
+        for (int i = 0; i < outputCount; i++) {
+            Port outputPort = new Port(false, stack, i);
+            outputPort.setTranslateX(halfSize + portExtension);
+            outputPort.setTranslateY(0);
 
-        Port outputPort = new Port(false, stack, 0);
-
-        outputPort.setTranslateX(halfSize + portExtension);
-        outputPort.setTranslateY(0);
-
-        configurePortEvents(outputPort);
-        stack.getChildren().add(outputPort);
+            configurePortEvents(outputPort);
+            stack.getChildren().add(outputPort);
+        }
     }
 
     private static void configurePortEvents(Port port) {
@@ -105,7 +164,8 @@ public class GateFactory {
     private static void makeDraggableandDeletable(
         StackPane node,
         Pane canvasPane,
-        GridController gridController
+        GridController gridController,
+        Consumer<StackPane> onDeleteAction
     ) {
         final Delta dragDelta = new Delta();
 
@@ -152,10 +212,8 @@ public class GateFactory {
 
             MenuItem deleteItem = new MenuItem("Delete Item");
             deleteItem.setOnAction(ev -> {
-                canvasPane.getChildren().remove(node);
-                Component comp = (Component) node.getUserData();
-                if (comp != null) {
-                    //TODO: add //circuit.removeComponent(comp)
+                if (onDeleteAction != null) {
+                    onDeleteAction.accept(node);
                 }
             });
 
@@ -163,5 +221,26 @@ public class GateFactory {
             menu.show(node, event.getScreenX(), event.getScreenY());
             event.consume();
         });
+    }
+
+    public static void refreshComponentState(StackPane visualGate) {
+        Component comp = (Component) visualGate.getUserData();
+        ImageView view = (ImageView) visualGate.getChildren().get(1);
+
+        if (comp instanceof Bulb) {
+            Bulb bulb = (Bulb) comp;
+            String imgName = bulb.isOn() ? "bulb_on.png" : "bulb_off.png";
+            String path = "/com/logisim/ui/images/" + imgName;
+            view.setImage(
+                new Image(GateFactory.class.getResourceAsStream(path))
+            );
+        } else if (comp instanceof Switch) {
+            Switch sw = (Switch) comp;
+            String imgName = sw.isOn() ? "switch_on.png" : "switch_off.png";
+            String path = "/com/logisim/ui/images/" + imgName;
+            view.setImage(
+                new Image(GateFactory.class.getResourceAsStream(path))
+            );
+        }
     }
 }

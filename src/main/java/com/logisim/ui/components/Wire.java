@@ -110,4 +110,12 @@ public class Wire extends Polyline {
             event.consume();
         });
     }
+
+    public Port getSource() {
+        return source;
+    }
+
+    public Port getSink() {
+        return sink;
+    }
 }

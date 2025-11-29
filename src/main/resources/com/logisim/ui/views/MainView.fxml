@@ -39,6 +39,18 @@
                 maxWidth="Infinity"
                 styleClass="button"
             />
+            <Button
+                text="SWITCH"
+                fx:id="btnSwitch"
+                maxWidth="Infinity"
+                styleClass="button"
+            />
+            <Button
+                text="BULB"
+                fx:id="btnBulb"
+                maxWidth="Infinity"
+                styleClass="button"
+            />
         </VBox>
     </left>
 
@@ -85,7 +97,7 @@
                     </Button>
 
 
-            <Button text="Run Simulation">
+            <Button text="Run Simulation" onAction="#handleRun">
                 <styleClass>
                     <String fx:value="button" />
                     <String fx:value="button-success" />

@@ -4,9 +4,11 @@ import com.logisim.data.CircuitDAO;
 import com.logisim.domain.Circuit;
 import com.logisim.domain.Project;
 import com.logisim.domain.components.And;
+import com.logisim.domain.components.Bulb;
 import com.logisim.domain.components.Component;
 import com.logisim.domain.components.Not;
 import com.logisim.domain.components.Or;
+import com.logisim.domain.components.Switch;
 import com.logisim.ui.components.GateFactory;
 import com.logisim.ui.components.Port;
 import com.logisim.ui.components.Wire;
@@ -39,7 +41,7 @@ public class MainViewController {
     private ScrollPane canvasScrollPane;
 
     @FXML
-    private Button btnAnd, btnOr, btnNot;
+    private Button btnAnd, btnOr, btnNot, btnSwitch, btnBulb;
 
     @FXML
     private Canvas gridCanvas;
@@ -80,6 +82,25 @@ public class MainViewController {
             e.printStackTrace();
             showAlert("Error", "Failed to Save Circuit: " + e.getMessage());
         }
+    }
+
+    @FXML
+    private void handleRun() {
+        if (currentCircuit == null) return;
+        System.out.println("Running Sim");
+        for (int i = 0; i < currentCircuit.getComponents().size(); i++) {
+            currentCircuit.simulate();
+        }
+
+        for (Node node : canvasPane.getChildren()) {
+            if (node instanceof StackPane) {
+                StackPane visualGate = (StackPane) node;
+                if (visualGate.getUserData() instanceof Component) {
+                    GateFactory.refreshComponentState(visualGate);
+                }
+            }
+        }
+        System.out.println("Simulation Complete.");
     }
 
     private void showAlert(String title, String content) {
@@ -151,7 +172,9 @@ public class MainViewController {
                 pos.getY(),
                 canvasPane,
                 gridController,
-                comp
+                comp,
+                this::handleDeleteGate,
+                this::handleToggleSwitch
             );
             canvasPane.getChildren().add(gate);
         });
@@ -172,7 +195,9 @@ public class MainViewController {
                 pos.getY(),
                 canvasPane,
                 gridController,
-                comp
+                comp,
+                this::handleDeleteGate,
+                this::handleToggleSwitch
             );
             canvasPane.getChildren().add(gate);
         });
@@ -193,7 +218,57 @@ public class MainViewController {
                 pos.getY(),
                 canvasPane,
                 gridController,
-                comp
+                comp,
+                this::handleDeleteGate,
+                this::handleToggleSwitch
+            );
+            gate.setUserData(comp);
+            canvasPane.getChildren().add(gate);
+        });
+
+        btnSwitch.setOnAction(e -> {
+            Point2D pos = SafePoints.getSafeSpawnPoint(
+                canvasScrollPane,
+                canvasPane,
+                gridSize
+            );
+            Component comp = new Switch();
+            comp.setPositionX(pos.getX());
+            comp.setPositionY(pos.getY());
+            currentCircuit.addComponent(comp);
+            StackPane gate = GateFactory.createGateWithHitBox(
+                "switch",
+                pos.getX(),
+                pos.getY(),
+                canvasPane,
+                gridController,
+                comp,
+                this::handleDeleteGate,
+                this::handleToggleSwitch
+            );
+            gate.setUserData(comp);
+            canvasPane.getChildren().add(gate);
+        });
+
+        btnBulb.setOnAction(e -> {
+            Point2D pos = SafePoints.getSafeSpawnPoint(
+                canvasScrollPane,
+                canvasPane,
+                gridSize
+            );
+            Component comp = new Bulb();
+            comp.setPositionX(pos.getX());
+            comp.setPositionY(pos.getY());
+            currentCircuit.addComponent(comp);
+            StackPane gate = GateFactory.createGateWithHitBox(
+                "bulb",
+                pos.getX(),
+                pos.getY(),
+                canvasPane,
+                gridController,
+                comp,
+                this::handleDeleteGate,
+                this::handleToggleSwitch
             );
             gate.setUserData(comp);
             canvasPane.getChildren().add(gate);
@@ -311,7 +386,9 @@ public class MainViewController {
                 comp.getPositionY(),
                 canvasPane,
                 gridController,
-                comp
+                comp,
+                this::handleDeleteGate,
+                this::handleToggleSwitch
             );
             canvasPane.getChildren().add(visualGate);
             uuidToVisualMap.put(comp.getUuid(), visualGate);
@@ -347,6 +424,36 @@ public class MainViewController {
                 }
             }
         }
+    }
+
+    private void handleDeleteGate(StackPane visualGate) {
+        Component comp = (Component) visualGate.getUserData();
+        if (currentCircuit != null && comp != null) {
+            currentCircuit.removeComponent(comp);
+        }
+
+        canvasPane
+            .getChildren()
+            .removeIf(node -> {
+                if (node instanceof Wire) {
+                    Wire wire = (Wire) node;
+                    if (
+                        wire.getSource().getParentGate() == visualGate ||
+                        wire.getSink().getParentGate() == visualGate
+                    ) {
+                        if (wire.getSink().getParentGate() != visualGate) {
+                            wire.getSink().setConnectionState(false);
+                        }
+                        return true;
+                    }
+                }
+                return false;
+            });
+        canvasPane.getChildren().remove(visualGate);
+    }
+
+    private void handleToggleSwitch(StackPane visualGate) {
+        handleRun();
     }
 
     /**

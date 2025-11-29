@@ -18,6 +18,11 @@ public abstract class Component {
         this.uuid = UUID.randomUUID().toString();
     }
 
+    public Component(String name) {
+        this.name = name;
+        this.uuid = UUID.randomUUID().toString();
+    }
+
     public void setInput(int index, boolean value) {
         inputs[index] = value;
     }

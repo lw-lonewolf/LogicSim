@@ -32,20 +32,12 @@ public class Circuit {
         components.add(comp);
     }
 
-    public void removeComponent(int index) throws InvalidParameterException {
-        if (index < 0 || index >= components.size()) {
-            throw new InvalidParameterException("Invalid Index Occured.");
-        }
-
-        Component toBeRemoved = components.get(index);
-
+    public void removeComponent(Component comp) {
+        if (comp == null) return;
         connectors.removeIf(
-            connector ->
-                connector.sourceComp == toBeRemoved ||
-                connector.sinkComp == toBeRemoved
+            c -> c.getSourceComp() == comp || c.getSinkComp() == comp
         );
-
-        components.remove(index);
+        components.remove(comp);
     }
 
     public void addConnection(
