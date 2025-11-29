@@ -90,7 +90,7 @@ public class Wire extends Polyline {
             if (getParent() != null) {
                 this.sink.setConnectionState(false);
                 ((Pane) getParent()).getChildren().remove(this);
-                Connector c = (Connector) this.getUserData();
+                // Connector c = (Connector) this.getUserData();
                 //TODO: add logic to rmeove this connector from circuit
             }
         });

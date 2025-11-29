@@ -3,7 +3,7 @@ package com.logisim.domain.components;
 public class And extends Component {
 
     public And() {
-        name = "AndGate";
+        name = "and";
         inputs = new boolean[2];
         outputs = new boolean[1];
         positionX = 100;

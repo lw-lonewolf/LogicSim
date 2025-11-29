@@ -8,8 +8,8 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
-<!-- Ensure controller path matches your package -->
 <StackPane
+    stylesheets="@../styles/application.css"
     xmlns="http://javafx.com/javafx/21"
     xmlns:fx="http://javafx.com/fxml/1"
     fx:controller="com.logisim.ui.controllers.StartScreenController"
@@ -32,8 +32,7 @@
                     preserveRatio="true"
                 >
                <image>
-                  <!-- Update path if you renamed folder to icons -->
-                  <Image url="@../icons/logo.png" />
+                  <Image url="@../images/logo.png" />
                </image>
             </ImageView>
 

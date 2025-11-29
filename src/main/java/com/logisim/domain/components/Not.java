@@ -3,7 +3,7 @@ package com.logisim.domain.components;
 public class Not extends Component {
 
     public Not() {
-        name = "NotGate";
+        name = "not";
         inputs = new boolean[1];
         outputs = new boolean[1];
         positionX = 100;

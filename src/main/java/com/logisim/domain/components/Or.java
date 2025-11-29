@@ -3,7 +3,7 @@ package com.logisim.domain.components;
 public class Or extends Component {
 
     public Or() {
-        name = "OrGate";
+        name = "or";
         inputs = new boolean[2];
         outputs = new boolean[1];
         positionX = 100;

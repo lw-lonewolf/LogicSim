@@ -7,6 +7,7 @@ import java.util.List;
 
 public class Circuit {
 
+    private long id;
     private String name;
     private List<Component> components = new ArrayList<>();
     private List<Connector> connectors = new ArrayList<>();
@@ -62,7 +63,7 @@ public class Circuit {
             );
         } else if (
             (source < 0 ||
-                source >= components.get(sourceComp).getInputs().length) ||
+                source >= components.get(sourceComp).getOutputs().length) ||
             (sink < 0 || sink >= components.get(sinkComp).getInputs().length)
         ) {
             throw new InvalidParameterException(
@@ -74,6 +75,45 @@ public class Circuit {
             components.get(sinkComp),
             source,
             sink
+        );
+        connectors.add(connector);
+    }
+
+    public void addConnection(
+        int sourcePin,
+        Component sourceComp,
+        int sinkPin,
+        Component sinkComp
+    ) {
+        if (sourceComp == null || sinkComp == null) {
+            throw new IllegalArgumentException(
+                "Source or Sink Component cannot be null"
+            );
+        }
+
+        if (sourcePin < 0 || sourcePin >= sourceComp.getOutputs().length) {
+            throw new IllegalArgumentException(
+                "Source pin index " +
+                    sourcePin +
+                    " does not exist on component " +
+                    sourceComp.getName()
+            );
+        }
+
+        if (sinkPin < 0 || sinkPin >= sinkComp.getInputs().length) {
+            throw new IllegalArgumentException(
+                "Sink pin index " +
+                    sinkPin +
+                    " does not exist on component " +
+                    sinkComp.getName()
+            );
+        }
+
+        Connector connector = new Connector(
+            sourceComp,
+            sinkComp,
+            sourcePin,
+            sinkPin
         );
         connectors.add(connector);
     }
@@ -196,5 +236,30 @@ public class Circuit {
             return "0";
         }
         return expression.toString();
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setComponents(List<Component> components) {
+        this.components = components;
+    }
+
+    public void setConnectors(List<Connector> connectors) {
+        this.connectors = connectors;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

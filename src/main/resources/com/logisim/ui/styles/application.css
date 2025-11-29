@@ -2,21 +2,45 @@
    1. GLOBAL RESET & BASE
    ============================================================================= */
 .root {
-    -fx-background-color: #1e1e1e; /* Deep dark background */
+    -fx-background-color: #1e1e1e; /* Main Canvas Background */
     -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
     -fx-font-size: 14px;
+    -fx-text-fill: #cccccc;
+}
+
+/* Ensure the canvas overlay is transparent so the grid shows */
+#canvasPane {
+    -fx-background-color: transparent;
 }
 
 /* =============================================================================
-   2. START SCREEN CARD (The central box)
+   2. CONTAINERS (Sidebar, Toolbar, Start Screen)
    ============================================================================= */
+
+/* The Sidebar (Component Palette) */
+.sidebar {
+    -fx-background-color: #252526;
+    -fx-border-color: #3e3e42;
+    -fx-border-width: 0 1 0 0; /* Right border only */
+    -fx-padding: 15;
+    -fx-spacing: 10;
+}
+
+/* The Top Toolbar */
+.tool-bar {
+    -fx-background-color: #252526;
+    -fx-border-color: #3e3e42;
+    -fx-border-width: 0 0 1 0; /* Bottom border only */
+    -fx-padding: 5 10;
+}
+
+/* The Central Card (Start Screen) */
 .start-card {
     -fx-background-color: #252526;
     -fx-background-radius: 8;
     -fx-border-color: #3e3e42;
     -fx-border-radius: 8;
     -fx-border-width: 1;
-    /* Soft shadow for depth */
     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.4), 20, 0, 0, 10);
     -fx-padding: 40;
 }
@@ -24,6 +48,10 @@
 /* =============================================================================
    3. TYPOGRAPHY
    ============================================================================= */
+.label {
+    -fx-text-fill: #cccccc;
+}
+
 .title-label {
     -fx-font-size: 28px;
     -fx-font-weight: bold;
@@ -32,7 +60,13 @@
 
 .subtitle-label {
     -fx-font-size: 14px;
-    -fx-text-fill: #858585; /* Muted gray */
+    -fx-text-fill: #858585;
+}
+
+.header-label {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #858585; /* Uppercase section headers */
 }
 
 .version-label {
@@ -40,73 +74,191 @@
     -fx-text-fill: #4d4d4d;
 }
 
-.separator-line {
-    -fx-stroke: #3e3e42;
-    -fx-stroke-width: 2;
-}
-
 /* =============================================================================
    4. BUTTONS
    ============================================================================= */
 .button {
-    -fx-cursor: hand;
-    -fx-background-radius: 4;
-    -fx-padding: 10 20;
-    -fx-font-weight: bold;
+    -fx-background-color: #3e3e42;
     -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 4;
+    -fx-cursor: hand;
+    -fx-padding: 8 16;
+    -fx-border-color: transparent;
+    -fx-border-width: 1;
 }
 
-/* Primary Action (New Project) - VS Code Blue */
+.button:hover {
+    -fx-background-color: #4e4e52;
+}
+
+.button:pressed {
+    -fx-background-color: #2d2d30;
+}
+
+/* PRIMARY BUTTON (Blue - New Project, Confirm) */
 .button-primary {
     -fx-background-color: #007acc;
 }
 .button-primary:hover {
-    -fx-background-color: #0098ff; /* Lighter blue on hover */
+    -fx-background-color: #0098ff;
 }
 .button-primary:pressed {
-    -fx-background-color: #005f9e; /* Darker blue on click */
+    -fx-background-color: #005f9e;
 }
 
-/* Secondary Action (Load Project) - Dark Gray */
-.button-secondary {
-    -fx-background-color: #3e3e42;
-    -fx-border-color: #3e3e42;
+/* SUCCESS BUTTON (Green - Run Simulation) */
+.button-success {
+    -fx-background-color: #2da042;
 }
-.button-secondary:hover {
-    -fx-background-color: #4e4e52;
+.button-success:hover {
+    -fx-background-color: #3fb950;
 }
-.button-secondary:pressed {
-    -fx-background-color: #2d2d30;
+
+/* DANGER BUTTON (Red - Delete, Stop) */
+.button-danger {
+    -fx-background-color: #d73a49;
+}
+.button-danger:hover {
+    -fx-background-color: #cb2431;
+}
+
+/* ICON BUTTONS (For Toolbar) */
+.button-icon {
+    -fx-background-color: transparent;
+    -fx-padding: 5;
+}
+.button-icon:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.1);
+    -fx-background-radius: 4;
 }
 
 /* =============================================================================
-   5. DIALOGS (New Project Popups)
+   5. LIST VIEW (Project & Circuit Lists)
    ============================================================================= */
-.dialog-pane {
+.list-view {
     -fx-background-color: #252526;
-}
-
-.dialog-pane .header-panel {
-    -fx-background-color: #1e1e1e;
+    -fx-control-inner-background: #252526;
+    -fx-background-insets: 0;
+    -fx-padding: 5;
     -fx-border-color: #3e3e42;
-    -fx-border-width: 0 0 1 0; /* Bottom border only */
+    -fx-border-radius: 4;
 }
 
-.dialog-pane .label {
+.list-cell {
+    -fx-background-color: #252526;
+    -fx-text-fill: #cccccc;
+    -fx-padding: 8 10;
+}
+
+.list-cell:filled:selected:focused,
+.list-cell:filled:selected {
+    -fx-background-color: #094771; /* Dark Blue Selection */
     -fx-text-fill: white;
 }
 
-/* Input Fields inside Dialogs */
+.list-cell:filled:hover {
+    -fx-background-color: #2a2d2e;
+}
+
+/* =============================================================================
+   6. INPUT FIELDS (TextFields)
+   ============================================================================= */
 .text-field {
     -fx-background-color: #3c3c3c;
     -fx-text-fill: white;
     -fx-prompt-text-fill: #858585;
     -fx-background-radius: 2;
-    -fx-border-color: #007acc;
-    -fx-border-width: 0 0 1 0; /* Underline style */
+    -fx-border-color: #3e3e42;
+    -fx-border-width: 1;
+    -fx-padding: 8;
 }
 
 .text-field:focused {
-    -fx-background-color: #454545;
-    -fx-border-width: 0 0 2 0;
+    -fx-border-color: #007acc; /* Blue border on focus */
+    -fx-background-color: #3c3c3c;
+}
+
+/* =============================================================================
+   7. DIALOGS & POPUPS
+   ============================================================================= */
+.dialog-pane {
+    -fx-background-color: #252526;
+}
+
+.dialog-pane > .content.label {
+    -fx-text-fill: white;
+}
+
+.dialog-pane .header-panel {
+    -fx-background-color: #1e1e1e;
+    -fx-border-color: #3e3e42;
+    -fx-border-width: 0 0 1 0;
+}
+
+/* =============================================================================
+   8. CONTEXT MENUS (Right Click)
+   ============================================================================= */
+.context-menu {
+    -fx-background-color: #252526;
+    -fx-border-color: #3e3e42;
+    -fx-border-width: 1;
+    -fx-background-radius: 4;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.4), 10, 0, 0, 5);
+}
+
+.menu-item {
+    -fx-padding: 5 10;
+}
+
+.menu-item .label {
+    -fx-text-fill: #cccccc;
+}
+
+.menu-item:focused {
+    -fx-background-color: #094771;
+    -fx-text-fill: white;
+}
+
+/* =============================================================================
+   9. SCROLLBARS (Modern Slim Dark)
+   ============================================================================= */
+.scroll-bar {
+    -fx-background-color: transparent;
+    -fx-pref-width: 12;
+    -fx-pref-height: 12;
+}
+
+.scroll-bar .track {
+    -fx-background-color: #1e1e1e;
+    -fx-border-radius: 0;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: #424242;
+    -fx-background-radius: 6;
+    -fx-background-insets: 2;
+}
+
+.scroll-bar .thumb:hover {
+    -fx-background-color: #4f4f4f;
+}
+
+.scroll-bar .thumb:pressed {
+    -fx-background-color: #5f5f5f;
+}
+
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+.scroll-bar .increment-arrow,
+.scroll-bar .decrement-arrow {
+    -fx-shape: " "; /* Hide arrows for clean look */
+}
+
+.corner {
+    -fx-background-color: #1e1e1e;
 }

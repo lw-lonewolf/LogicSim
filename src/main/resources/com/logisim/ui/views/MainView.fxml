@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.control.*?>
+<?import java.lang.String?>
 <?import javafx.scene.canvas.Canvas?>
-<?import javafx.scene.Group?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 <BorderPane
+    stylesheets="@../styles/application.css"
     xmlns="http://javafx.com/javafx/21"
     xmlns:fx="http://javafx.com/fxml/1"
     fx:controller="com.logisim.ui.controllers.MainViewController"
@@ -11,15 +18,27 @@
 
     <!-- Left sidebar -->
     <left>
-        <VBox
-            fx:id="sidebar"
-            spacing="10"
-            style="-fx-padding: 10; -fx-background-color: #f0f0f0;"
-        >
-            <Label text="Components" />
-            <Button text="AND" fx:id="btnAnd" />
-            <Button text="OR" fx:id="btnOr" />
-            <Button text="NOT" fx:id="btnNot" />
+        <VBox fx:id="sidebar" styleClass="sidebar">
+            <Label text="COMPONENTS" styleClass="header-label" />
+
+            <Button
+                text="AND"
+                fx:id="btnAnd"
+                maxWidth="Infinity"
+                styleClass="button"
+            />
+            <Button
+                text="OR"
+                fx:id="btnOr"
+                maxWidth="Infinity"
+                styleClass="button"
+            />
+            <Button
+                text="NOT"
+                fx:id="btnNot"
+                maxWidth="Infinity"
+                styleClass="button"
+            />
         </VBox>
     </left>
 
@@ -32,27 +51,53 @@
             prefHeight="600"
             hbarPolicy="NEVER"
             vbarPolicy="NEVER"
+            style="-fx-background-color: transparent; -fx-background: #1e1e1e;"
         >
-        <content>
-            <Pane
-                    fx:id="canvasPane"
-                    style="-fx-background-color: #000000;"
+            <content>
+                <StackPane
+                    alignment="TOP_LEFT"
                     prefWidth="4000"
                     prefHeight="4000"
+                    style="-fx-background-color: #1e1e1e;"
                 >
-                <children>
-                    <Canvas fx:id="gridCanvas" width="4000" height="4000" />
-                </children>
-                <!-- Components will be added here dynamically -->
-            </Pane>
-        </content>
-            </ScrollPane>
+                    <children>
+                        <Canvas fx:id="gridCanvas" width="4000" height="4000" />
+
+                        <Pane
+                            fx:id="canvasPane"
+                            prefWidth="4000"
+                            prefHeight="4000"
+                        />
+                    </children>
+                </StackPane>
+            </content>
+        </ScrollPane>
     </center>
 
     <top>
-        <ToolBar>
-            <Button text="Run Simulation" />
-            <Button text="Analyze" />
+        <ToolBar styleClass="tool-bar">
+
+        <Button text="Save" onAction="#handleSave">
+                        <styleClass>
+                            <String fx:value="button" />
+                            <String fx:value="button-primary" />
+                        </styleClass>
+                    </Button>
+
+
+            <Button text="Run Simulation">
+                <styleClass>
+                    <String fx:value="button" />
+                    <String fx:value="button-success" />
+                </styleClass>
+            </Button>
+
+            <Button text="Analyze">
+                <styleClass>
+                    <String fx:value="button" />
+                    <String fx:value="button-secondary" />
+                </styleClass>
+            </Button>
         </ToolBar>
     </top>
 

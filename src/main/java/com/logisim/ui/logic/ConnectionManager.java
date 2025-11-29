@@ -4,12 +4,18 @@ import com.logisim.domain.Connector;
 import com.logisim.domain.components.Component;
 import com.logisim.ui.components.Port;
 import com.logisim.ui.components.Wire;
+import java.util.function.Consumer;
 import javafx.scene.layout.Pane;
 
 public class ConnectionManager {
 
     private Port selectedSourcePort = null;
     private Pane canvasPane;
+    private Consumer<Connector> onConnectionAdded;
+
+    public void setOnConnectionAdded(Consumer<Connector> listener) {
+        this.onConnectionAdded = listener;
+    }
 
     public ConnectionManager(Pane canvasPane) {
         this.canvasPane = canvasPane;
@@ -76,7 +82,7 @@ public class ConnectionManager {
         canvasPane.getChildren().add(wire);
 
         Component sourceComp = (Component) source.getParentGate().getUserData();
-        Component sinkComp = (Component) source.getParentGate().getUserData();
+        Component sinkComp = (Component) sink.getParentGate().getUserData();
         Connector c = new Connector(
             sourceComp,
             sinkComp,
@@ -84,8 +90,11 @@ public class ConnectionManager {
             sink.getIndex()
         );
         wire.setUserData(c);
-        //TODO : LOGIC MAPPING tO WORK WITH CIRCUIT TO BE ADDED HERE
-        // c.process(
-        System.out.println("Connection Created.");
+        if (onConnectionAdded != null) {
+            onConnectionAdded.accept(c);
+        }
+        System.out.println(
+            "Connection Created. + sent to Circuit as a listener var"
+        );
     }
 }

@@ -46,7 +46,7 @@ public class StartScreenController {
             Project newProject = new Project(name);
             newProject.save();
 
-            loadMainEditor(newProject);
+            loadDashboard(newProject);
         }
     }
 
@@ -82,33 +82,35 @@ public class StartScreenController {
         if (result.isPresent()) {
             Project selectedProject = result.get();
             // TODO: load Circuits/Components for this project here
-            loadMainEditor(selectedProject);
+            loadDashboard(selectedProject);
         }
     }
 
-    private void loadMainEditor(Project project) {
+    private void loadDashboard(Project project) {
         try {
             FXMLLoader loader = new FXMLLoader(
-                getClass().getResource("/com/logisim/ui/views/MainView.fxml")
+                getClass().getResource(
+                    "/com/logisim/ui/views/project_dashboard.fxml"
+                )
             );
             Parent root = loader.load();
 
-            MainViewController mainController = loader.getController();
-            mainController.setCurrentProject(project);
+            ProjectDashboardController controller = loader.getController();
+            controller.setProject(project);
 
             Stage stage = (Stage) btnNewProject.getScene().getWindow();
             Scene scene = new Scene(root);
+
             scene
                 .getStylesheets()
                 .add(
                     getClass()
-                        .getResource("/com/logisim/ui/styles/canvasPane.css")
+                        .getResource("/com/logisim/ui/styles/application.css")
                         .toExternalForm()
                 );
 
             stage.setScene(scene);
             stage.setTitle("Logisim Clone - " + project.getName());
-            stage.setMaximized(true);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
