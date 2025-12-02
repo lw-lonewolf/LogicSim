@@ -81,9 +81,63 @@ public class StartScreenController {
 
         if (result.isPresent()) {
             Project selectedProject = result.get();
-            // TODO: load Circuits/Components for this project here
             loadDashboard(selectedProject);
         }
+    }
+
+    @FXML
+    private void handleDeleteProject() {
+        ProjectDAO dao = new ProjectDAO();
+        List<Project> projects = dao.getAllProjects();
+
+        if (projects.isEmpty()) {
+            showAlert("Info", "No projects to delete.");
+            return;
+        }
+
+        ChoiceDialog<Project> dialog = new ChoiceDialog<>(
+            projects.get(0),
+            projects
+        );
+        dialog.setTitle("Delete Project");
+        dialog.setHeaderText(
+            "WARNING: This will delete the project and ALL its circuits!"
+        );
+        dialog.setContentText("Select Project to Delete:");
+
+        dialog
+            .getDialogPane()
+            .getStylesheets()
+            .add(
+                getClass()
+                    .getResource("/com/logisim/ui/styles/application.css")
+                    .toExternalForm()
+            );
+        dialog.getDialogPane().getStyleClass().add("dialog-pane");
+
+        Optional<Project> result = dialog.showAndWait();
+
+        if (result.isPresent()) {
+            dao.deleteProject(result.get().getId());
+            showAlert("Success", "Project deleted successfully.");
+        }
+    }
+
+    private void showAlert(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert
+            .getDialogPane()
+            .getStylesheets()
+            .add(
+                getClass()
+                    .getResource("/com/logisim/ui/styles/application.css")
+                    .toExternalForm()
+            );
+        alert.getDialogPane().getStyleClass().add("dialog-pane");
+        alert.showAndWait();
     }
 
     private void loadDashboard(Project project) {

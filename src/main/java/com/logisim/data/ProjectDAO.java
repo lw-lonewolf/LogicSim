@@ -61,4 +61,19 @@ public class ProjectDAO {
         }
         return projects;
     }
+
+    public void deleteProject(long id) {
+        String sql = "DELETE FROM projects WHERE id = ?";
+        try (
+            java.sql.Connection conn =
+                DatabaseManager.getInstance().getConnection();
+            java.sql.PreparedStatement pstmt = conn.prepareStatement(sql)
+        ) {
+            pstmt.setLong(1, id);
+            pstmt.executeUpdate();
+            System.out.println("Project deleted: " + id);
+        } catch (java.sql.SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

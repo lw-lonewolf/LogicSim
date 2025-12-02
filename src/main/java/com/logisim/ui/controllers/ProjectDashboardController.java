@@ -24,6 +24,9 @@ public class ProjectDashboardController {
     @FXML
     private Button btnOpen;
 
+    @FXML
+    private Button btnDelete;
+
     private Project currentProject;
     private final CircuitDAO circuitDao = new CircuitDAO();
 
@@ -32,9 +35,11 @@ public class ProjectDashboardController {
         circuitList
             .getSelectionModel()
             .selectedItemProperty()
-            .addListener((obs, oldVal, newVal) ->
-                btnOpen.setDisable(newVal == null)
-            );
+            .addListener((obs, oldVal, newVal) -> {
+                boolean hasSelection = (newVal != null);
+                btnOpen.setDisable(newVal == null);
+                if (btnDelete != null) btnDelete.setDisable(!hasSelection);
+            });
     }
 
     public void setProject(Project project) {
@@ -50,6 +55,33 @@ public class ProjectDashboardController {
                 currentProject.getId()
             );
             circuitList.getItems().addAll(circuits);
+        }
+    }
+
+    @FXML
+    private void handleDeleteCircuit() {
+        Circuit selected = circuitList.getSelectionModel().getSelectedItem();
+        if (selected == null) return;
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete Circuit");
+        alert.setHeaderText("Delete '" + selected.getName() + "'?");
+        alert.setContentText("This cannot be undone.");
+
+        alert
+            .getDialogPane()
+            .getStylesheets()
+            .add(
+                getClass()
+                    .getResource("/com/logisim/ui/styles/application.css")
+                    .toExternalForm()
+            );
+        alert.getDialogPane().getStyleClass().add("dialog-pane");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            circuitDao.deleteCircuit(selected.getId());
+            refreshList();
         }
     }
 

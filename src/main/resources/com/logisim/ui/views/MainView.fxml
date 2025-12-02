@@ -9,6 +9,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Separator?>
 <BorderPane
     stylesheets="@../styles/application.css"
     xmlns="http://javafx.com/javafx/21"
@@ -51,6 +52,21 @@
                 maxWidth="Infinity"
                 styleClass="button"
             />
+             <Separator />
+             <Label text="MY CIRCUITS" styleClass="header-label" />
+
+                     <ScrollPane
+                fitToWidth="true"
+                style="-fx-background-color: transparent;"
+            >
+                         <content>
+                             <VBox
+                        fx:id="subCircuitContainer"
+                        spacing="5"
+                        style="-fx-background-color: transparent;"
+                    />
+                         </content>
+                     </ScrollPane>
         </VBox>
     </left>
 
@@ -89,6 +105,15 @@
     <top>
         <ToolBar styleClass="tool-bar">
 
+        <Button text="← Back" onAction="#handleBackToDashboard">
+                     <styleClass>
+                         <String fx:value="button" />
+                         <String fx:value="button-secondary" />
+                     </styleClass>
+                 </Button>
+
+        <Separator orientation="VERTICAL" />
+
         <Button text="Save" onAction="#handleSave">
                         <styleClass>
                             <String fx:value="button" />
@@ -104,7 +129,7 @@
                 </styleClass>
             </Button>
 
-            <Button text="Analyze">
+            <Button text="Analyze" onAction="#handleAnalyze">
                 <styleClass>
                     <String fx:value="button" />
                     <String fx:value="button-secondary" />

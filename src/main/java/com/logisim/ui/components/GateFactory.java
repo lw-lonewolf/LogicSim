@@ -2,6 +2,7 @@ package com.logisim.ui.components;
 
 import com.logisim.domain.components.Bulb;
 import com.logisim.domain.components.Component;
+import com.logisim.domain.components.SubCircuitComponent;
 import com.logisim.domain.components.Switch;
 import com.logisim.ui.controllers.GridController;
 import com.logisim.ui.logic.ConnectionManager;
@@ -15,6 +16,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 
 public class GateFactory {
 
@@ -41,6 +45,16 @@ public class GateFactory {
         Consumer<StackPane> onToggleAction
     ) {
         String imagePath;
+        if (component instanceof SubCircuitComponent) {
+            return createSubCircuitVisual(
+                x,
+                y,
+                (SubCircuitComponent) component,
+                canvasPane,
+                gridController,
+                onDeleteAction
+            );
+        }
         if (component instanceof Switch) {
             imagePath = "/com/logisim/ui/images/switch_off.png";
 
@@ -91,6 +105,62 @@ public class GateFactory {
                 onToggleAction
             );
         }
+        return stack;
+    }
+
+    private static StackPane createSubCircuitVisual(
+        double x,
+        double y,
+        com.logisim.domain.components.SubCircuitComponent subComp,
+        Pane canvasPane,
+        GridController gridController,
+        java.util.function.Consumer<StackPane> onDeleteAction
+    ) {
+        int inputs = subComp.getInputs().length;
+        int outputs = subComp.getOutputs().length;
+
+        int maxPins = Math.max(inputs, outputs);
+        double pinSpacing = 20.0;
+        double height = Math.max(50, maxPins * pinSpacing + 20);
+        double width = 80.0;
+
+        Rectangle body = new Rectangle(width, height);
+        body.setFill(Color.WHITE);
+        body.setStroke(Color.BLACK);
+        body.setStrokeWidth(2);
+
+        Text label = new Text(subComp.getName());
+        label.setFont(Font.font("Arial", FontWeight.BOLD, 12));
+
+        StackPane stack = new StackPane(body, label);
+        stack.setLayoutX(x);
+        stack.setLayoutY(y);
+        stack.setUserData(subComp);
+
+        double startY = -(height / 2) + 10;
+
+        for (int i = 0; i < inputs; i++) {
+            Port p = new Port(true, stack, i);
+            p.setTranslateX(-(width / 2));
+            p.setTranslateY(startY + (i * pinSpacing));
+            configurePortEvents(p);
+            stack.getChildren().add(p);
+        }
+
+        for (int i = 0; i < outputs; i++) {
+            Port p = new Port(false, stack, i);
+            p.setTranslateX((width / 2));
+            p.setTranslateY(startY + (i * pinSpacing));
+            configurePortEvents(p);
+            stack.getChildren().add(p);
+        }
+
+        makeDraggableandDeletable(
+            stack,
+            canvasPane,
+            gridController,
+            onDeleteAction
+        );
         return stack;
     }
 
@@ -225,6 +295,13 @@ public class GateFactory {
 
     public static void refreshComponentState(StackPane visualGate) {
         Component comp = (Component) visualGate.getUserData();
+        if (
+            !(comp instanceof com.logisim.domain.components.Switch) &&
+            !(comp instanceof com.logisim.domain.components.Bulb)
+        ) {
+            return;
+        }
+
         ImageView view = (ImageView) visualGate.getChildren().get(1);
 
         if (comp instanceof Bulb) {

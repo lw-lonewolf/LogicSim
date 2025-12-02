@@ -76,6 +76,17 @@
                   <String fx:value="button-secondary" />
                </styleClass>
             </Button>
+            <Button
+                    maxWidth="1.7976931348623157E308"
+                    mnemonicParsing="false"
+                    onAction="#handleDeleteProject"
+                    text="Delete Project"
+                >
+                           <styleClass>
+                              <String fx:value="button" />
+                              <String fx:value="button-danger" />
+                           </styleClass>
+                        </Button>
          </children>
       </VBox>
 

@@ -262,3 +262,50 @@
 .corner {
     -fx-background-color: #1e1e1e;
 }
+
+/* =============================================================================
+   10. TABLE VIEW (Analysis Screen)
+   ============================================================================= */
+.table-view {
+    -fx-background-color: #252526;
+    -fx-border-color: #3e3e42;
+    -fx-base: #1e1e1e; /* Helps default rows match theme */
+    -fx-control-inner-background: #1e1e1e;
+    -fx-background-insets: 0;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #252526;
+    -fx-border-width: 0 0 1 0;
+    -fx-border-color: #3e3e42;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.table-view .table-cell {
+    -fx-text-fill: #cccccc;
+    -fx-alignment: CENTER;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: #2a2d2e;
+}
+
+.table-row-cell:even {
+    -fx-background-color: #1e1e1e;
+}
+
+.table-row-cell:hover {
+    -fx-background-color: #3e3e42;
+}
+
+/* TextArea for Expression */
+.text-area {
+    -fx-background-color: #252526;
+    -fx-control-inner-background: #252526;
+    -fx-text-fill: #4ec9b0; /* VS Code Cyan color for code */
+    -fx-border-color: #3e3e42;
+}

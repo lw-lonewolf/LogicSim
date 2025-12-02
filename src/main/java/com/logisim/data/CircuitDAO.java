@@ -7,7 +7,9 @@ import com.logisim.domain.components.Bulb;
 import com.logisim.domain.components.Component;
 import com.logisim.domain.components.Not;
 import com.logisim.domain.components.Or;
+import com.logisim.domain.components.SubCircuitComponent;
 import com.logisim.domain.components.Switch;
+import com.logisim.ui.controllers.MainViewController;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -148,6 +150,14 @@ public class CircuitDAO {
                     case "not" -> new Not();
                     case "switch" -> new Switch();
                     case "bulb" -> new Bulb();
+                    case "subcircuitcomponent" -> {
+                        long refid = rs.getLong("ref_circuit_id");
+                        Circuit inner =
+                            new MainViewController().loadFullCircuitFromDB(
+                                refid
+                            );
+                        yield new SubCircuitComponent(inner);
+                    }
                     default -> null;
                 };
 
@@ -254,6 +264,21 @@ public class CircuitDAO {
                     e.printStackTrace();
                 }
             }
+        }
+    }
+
+    public void deleteCircuit(long id) {
+        String sql = "DELETE FROM circuits WHERE id = ?";
+        try (
+            java.sql.Connection conn =
+                DatabaseManager.getInstance().getConnection();
+            java.sql.PreparedStatement pstmt = conn.prepareStatement(sql)
+        ) {
+            pstmt.setLong(1, id);
+            pstmt.executeUpdate();
+            System.out.println("Circuit deleted: " + id);
+        } catch (java.sql.SQLException e) {
+            e.printStackTrace();
         }
     }
 }

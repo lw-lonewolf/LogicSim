@@ -135,66 +135,49 @@ public class Circuit {
     }
 
     public boolean[][] analyze() {
-        List<Component> inputComponents = new ArrayList<>();
-        List<Integer> inputIndices = new ArrayList<>();
+        List<Component> switches = new ArrayList<>();
+        List<Component> bulbs = new ArrayList<>();
+
         for (Component comp : components) {
-            for (int i = 0; i < comp.getInputs().length; i++) {
-                boolean connectedAsSink = false;
-                for (Connector conn : connectors) {
-                    if (conn.sinkComp == comp && conn.sink == i) {
-                        connectedAsSink = true;
-                        break;
-                    }
-                }
-                if (!connectedAsSink) {
-                    inputComponents.add(comp);
-                    inputIndices.add(i);
-                }
+            if (comp instanceof com.logisim.domain.components.Switch) {
+                switches.add(comp);
+            } else if (comp instanceof com.logisim.domain.components.Bulb) {
+                bulbs.add(comp);
             }
         }
 
-        List<Component> outputComponents = new ArrayList<>();
-        List<Integer> outputIndices = new ArrayList<>();
-        for (Component comp : components) {
-            for (int i = 0; i < comp.getOutputs().length; i++) {
-                boolean connectedAsSource = false;
-                for (Connector conn : connectors) {
-                    if (conn.sourceComp == comp && conn.source == i) {
-                        connectedAsSource = true;
-                        break;
-                    }
-                }
-                if (!connectedAsSource) {
-                    outputComponents.add(comp);
-                    outputIndices.add(i);
-                }
-            }
+        int nInputs = switches.size();
+        int nOutputs = bulbs.size();
+
+        if (nInputs == 0 || nOutputs == 0) {
+            return new boolean[0][0];
         }
 
-        int nInputs = inputComponents.size();
-        int nOutputs = outputComponents.size();
-        int totalCombinations = 1 << nInputs; // 2^nInputs
-
+        int totalCombinations = 1 << nInputs;
         boolean[][] truthTable = new boolean[totalCombinations][nInputs +
         nOutputs];
 
         for (int row = 0; row < totalCombinations; row++) {
-            int remainder = row;
-
+            int tempRow = row;
             for (int col = nInputs - 1; col >= 0; col--) {
-                boolean value = (remainder % 2 == 1);
-                remainder /= 2;
+                boolean isOn = (tempRow % 2) == 1;
+                tempRow /= 2;
 
-                inputComponents.get(col).setInput(inputIndices.get(col), value);
-                truthTable[row][col] = value;
+                ((com.logisim.domain.components.Switch) switches.get(
+                        col
+                    )).setState(isOn);
+
+                truthTable[row][col] = isOn;
             }
 
-            simulate();
+            for (int i = 0; i < components.size() + 2; i++) {
+                simulate();
+            }
 
             for (int col = 0; col < nOutputs; col++) {
-                truthTable[row][nInputs + col] = outputComponents
-                    .get(col)
-                    .getOutput(outputIndices.get(col));
+                com.logisim.domain.components.Bulb bulb =
+                    (com.logisim.domain.components.Bulb) bulbs.get(col);
+                truthTable[row][nInputs + col] = bulb.isOn();
             }
         }
 
@@ -205,6 +188,12 @@ public class Circuit {
         boolean[][] truthTable,
         List<String> inputNames
     ) {
+        for (int i = 0; i < truthTable.length; i++) {
+            for (int j = 0; j < truthTable[0].length; j++) {
+                System.out.print(truthTable[i][j]);
+            }
+            System.out.print("\n");
+        }
         StringBuilder expression = new StringBuilder();
         int nRows = truthTable.length;
         int nInputs = inputNames.size();

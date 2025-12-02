@@ -1,6 +1,5 @@
 package com.logisim.ui.components;
 
-import com.logisim.domain.Connector;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ContextMenu;
@@ -91,7 +90,6 @@ public class Wire extends Polyline {
                 this.sink.setConnectionState(false);
                 ((Pane) getParent()).getChildren().remove(this);
                 // Connector c = (Connector) this.getUserData();
-                //TODO: add logic to rmeove this connector from circuit
             }
         });
 

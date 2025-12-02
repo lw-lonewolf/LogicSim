@@ -5,7 +5,12 @@ import com.logisim.domain.components.Component;
 import com.logisim.ui.components.Port;
 import com.logisim.ui.components.Wire;
 import java.util.function.Consumer;
+import javafx.beans.binding.Bindings;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 
 public class ConnectionManager {
 
@@ -13,12 +18,34 @@ public class ConnectionManager {
     private Pane canvasPane;
     private Consumer<Connector> onConnectionAdded;
 
+    private Line interactionLine;
+
+    public ConnectionManager(Pane canvasPane) {
+        this.canvasPane = canvasPane;
+    }
+
     public void setOnConnectionAdded(Consumer<Connector> listener) {
         this.onConnectionAdded = listener;
     }
 
-    public ConnectionManager(Pane canvasPane) {
-        this.canvasPane = canvasPane;
+    public void onMouseMove(MouseEvent event) {
+        if (selectedSourcePort != null && interactionLine != null) {
+            interactionLine.setEndX(event.getX());
+            interactionLine.setEndY(event.getY());
+        }
+    }
+
+    public void cancelConnection() {
+        if (selectedSourcePort != null) {
+            selectedSourcePort.setSelected(false);
+            selectedSourcePort = null;
+
+            if (interactionLine != null) {
+                canvasPane.getChildren().remove(interactionLine);
+                interactionLine = null;
+            }
+            System.out.println("Connection Canceled.");
+        }
     }
 
     public void handlePortClick(Port clickedPort) {
@@ -30,6 +57,52 @@ public class ConnectionManager {
             if (clickedPort.isInput() == false) {
                 selectedSourcePort = clickedPort;
                 selectedSourcePort.setSelected(true);
+
+                interactionLine = new Line();
+                interactionLine.setStroke(Color.GRAY);
+                interactionLine.setStrokeWidth(2);
+                interactionLine.getStrokeDashArray().addAll(10d, 10d);
+                interactionLine.setMouseTransparent(true);
+
+                StackPane gate = clickedPort.getParentGate();
+                interactionLine
+                    .startXProperty()
+                    .bind(
+                        gate
+                            .layoutXProperty()
+                            .add(
+                                Bindings.createDoubleBinding(
+                                    () ->
+                                        clickedPort
+                                            .getBoundsInParent()
+                                            .getCenterX(),
+                                    clickedPort.boundsInParentProperty()
+                                )
+                            )
+                    );
+                interactionLine
+                    .startYProperty()
+                    .bind(
+                        gate
+                            .layoutYProperty()
+                            .add(
+                                Bindings.createDoubleBinding(
+                                    () ->
+                                        clickedPort
+                                            .getBoundsInParent()
+                                            .getCenterY(),
+                                    clickedPort.boundsInParentProperty()
+                                )
+                            )
+                    );
+
+                interactionLine.setEndX(
+                    gate.getLayoutX() + clickedPort.getTranslateX()
+                );
+                interactionLine.setEndY(
+                    gate.getLayoutY() + clickedPort.getTranslateY()
+                );
+                canvasPane.getChildren().add(interactionLine);
                 System.out.println(">>> Connection STARTED from Output.");
             } else {
                 System.out.println(
@@ -37,49 +110,44 @@ public class ConnectionManager {
                 );
             }
         } else {
-            if (clickedPort.isInput() == true) {
-                if (clickedPort.getConnectionState()) {
-                    System.out.println(
-                        "Connection Failed: Input Port is in use."
-                    );
-                    cancelSelection();
-                    return;
-                }
-
+            if (
+                clickedPort.isInput() &&
+                clickedPort.getParentGate() !=
+                selectedSourcePort.getParentGate()
+            ) {
                 if (
+                    clickedPort.isInput() &&
                     clickedPort.getParentGate() !=
                     selectedSourcePort.getParentGate()
                 ) {
-                    createConnection(selectedSourcePort, clickedPort);
-                    clickedPort.setConnectionState(true);
+                    if (!clickedPort.getConnectionState()) {
+                        createConnection(selectedSourcePort, clickedPort);
 
-                    selectedSourcePort.setSelected(false);
-                    selectedSourcePort = null;
-                    System.out.println(">>> Connection CREATED successfully.");
+                        canvasPane.getChildren().remove(interactionLine);
+                        interactionLine = null;
+
+                        selectedSourcePort.setSelected(false);
+                        selectedSourcePort = null;
+
+                        clickedPort.setConnectionState(true);
+                    } else {
+                        System.out.println("Input port already occupied.");
+                        cancelConnection();
+                    }
                 } else {
-                    System.out.println("X Cannot connect a gate to itself.");
-                    cancelSelection();
+                    System.out.println(
+                        "Invalid connection (Must be Output -> Input)."
+                    );
+                    cancelConnection();
                 }
-            } else {
-                System.out.println(
-                    "X Connection Failed: You must connect Output to Input."
-                );
-                cancelSelection();
             }
-        }
-    }
-
-    private void cancelSelection() {
-        if (selectedSourcePort != null) {
-            selectedSourcePort.setSelected(false);
-            selectedSourcePort = null;
-            System.out.println(">>> Selection CANCELED.");
         }
     }
 
     private void createConnection(Port source, Port sink) {
         Wire wire = new Wire(source, sink);
         canvasPane.getChildren().add(wire);
+        wire.toBack();
 
         Component sourceComp = (Component) source.getParentGate().getUserData();
         Component sinkComp = (Component) sink.getParentGate().getUserData();

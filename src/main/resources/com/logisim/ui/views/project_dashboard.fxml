@@ -57,7 +57,17 @@
                           <String fx:value="button-primary" />
                       </styleClass>
                   </Button>
-
+                  <Button
+                            fx:id="btnDelete"
+                            onAction="#handleDeleteCircuit"
+                            text="Delete"
+                            disable="true"
+                        >
+                                      <styleClass>
+                                          <String fx:value="button" />
+                                          <String fx:value="button-danger" />
+                                      </styleClass>
+                                  </Button>
                   <Button
                             fx:id="btnOpen"
                             onAction="#handleOpenCircuit"
