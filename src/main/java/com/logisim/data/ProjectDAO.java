@@ -10,10 +10,31 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Data Access Object (DAO) responsible for handling database operations
+ * related to {@link Project} entities.
+ * <p>
+ * This class manages the persistence of projects and delegates the saving
+ * of associated circuits to the {@link CircuitDAO}.
+ * </p>
+ */
 public class ProjectDAO {
 
+    /**
+     * Helper DAO used to manage the persistence of circuits belonging to a project.
+     */
     private final CircuitDAO circuitDAO = new CircuitDAO();
 
+    /**
+     * Saves a new project and all its associated circuits to the database.
+     * <p>
+     * This method performs an SQL insertion for the project to generate a Project ID.
+     * Once the ID is obtained, it iterates through the circuits contained within the
+     * project object and saves them using the {@link CircuitDAO}.
+     * </p>
+     *
+     * @param project The {@link Project} object containing the data to be persisted.
+     */
     public void saveProject(Project project) {
         String sql = "INSERT INTO projects(name) VALUES(?)";
 
@@ -42,6 +63,15 @@ public class ProjectDAO {
         }
     }
 
+    /**
+     * Retrieves all projects stored in the database.
+     * <p>
+     * The results are ordered by their creation timestamp in descending order
+     * (newest projects first).
+     * </p>
+     *
+     * @return A {@link List} of {@link Project} objects populated with IDs and names.
+     */
     public List<Project> getAllProjects() {
         List<Project> projects = new ArrayList<>();
         String sql = "SELECT id, name FROM projects ORDER BY created_at DESC";
@@ -62,6 +92,15 @@ public class ProjectDAO {
         return projects;
     }
 
+    /**
+     * Deletes a project from the database by its unique identifier.
+     * <p>
+     * Depending on the database schema configuration (specifically cascading deletes),
+     * this operation usually removes all associated circuits and components as well.
+     * </p>
+     *
+     * @param id The unique database identifier of the project to be deleted.
+     */
     public void deleteProject(long id) {
         String sql = "DELETE FROM projects WHERE id = ?";
         try (

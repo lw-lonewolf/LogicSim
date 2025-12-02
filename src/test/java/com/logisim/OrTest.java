@@ -9,37 +9,37 @@ class OrTest {
 
     @Test
     void truetrueInput() {
-        Or OrGate = new Or();
-        OrGate.setInput(0, true);
-        OrGate.setInput(1, true);
-        OrGate.execute();
-        assertTrue(OrGate.getOutput());
+        Or orGate = new Or();
+        orGate.setInput(0, true);
+        orGate.setInput(1, true);
+        orGate.execute();
+        assertTrue(orGate.getOutput());
     }
 
     @Test
     void falsefalseInput() {
-        Or OrGate = new Or();
-        OrGate.setInput(0, false);
-        OrGate.setInput(1, false);
-        OrGate.execute();
-        assertFalse(OrGate.getOutput());
+        Or orGate = new Or();
+        orGate.setInput(0, false);
+        orGate.setInput(1, false);
+        orGate.execute();
+        assertFalse(orGate.getOutput());
     }
 
     @Test
     void falsetrueInput() {
-        Or OrGate = new Or();
-        OrGate.setInput(0, false);
-        OrGate.setInput(1, true);
-        OrGate.execute();
-        assertTrue(OrGate.getOutput());
+        Or orGate = new Or();
+        orGate.setInput(0, false);
+        orGate.setInput(1, true);
+        orGate.execute();
+        assertTrue(orGate.getOutput());
     }
 
     @Test
     void truefalseInput() {
-        Or OrGate = new Or();
-        OrGate.setInput(0, true);
-        OrGate.setInput(1, false);
-        OrGate.execute();
-        assertTrue(OrGate.getOutput());
+        Or orGate = new Or();
+        orGate.setInput(0, true);
+        orGate.setInput(1, false);
+        orGate.execute();
+        assertTrue(orGate.getOutput());
     }
 }

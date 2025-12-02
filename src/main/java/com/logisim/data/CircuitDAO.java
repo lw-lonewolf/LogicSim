@@ -18,8 +18,26 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Data Access Object (DAO) responsible for handling database operations
+ * related to {@link Circuit} entities.
+ * <p>
+ * This class provides methods to create, retrieve, update, and delete circuits,
+ * as well as managing the persistence of their associated components and connectors.
+ * </p>
+ */
 public class CircuitDAO {
 
+    /**
+     * Saves a new circuit and its associated contents to the database.
+     * <p>
+     * This method first inserts the circuit record. If successful, it retrieves the
+     * generated circuit ID and proceeds to save the circuit's components and connectors.
+     * </p>
+     *
+     * @param circuit   The {@link Circuit} object containing the data to be saved.
+     * @param projectId The unique identifier of the project to which this circuit belongs.
+     */
     public void saveCircuit(Circuit circuit, long projectId) {
         String sql = "INSERT INTO circuits(project_id, name) VALUES (?, ?)";
         try (
@@ -45,6 +63,14 @@ public class CircuitDAO {
         }
     }
 
+    /**
+     * Batch inserts the components of a circuit into the database.
+     *
+     * @param circuit   The circuit object containing the list of components.
+     * @param circuitId The database ID of the circuit these components belong to.
+     * @param conn      The active database connection to be used for the operation.
+     * @throws SQLException If a database access error occurs or the SQL execution fails.
+     */
     private void saveComponents(
         Circuit circuit,
         long circuitId,
@@ -66,6 +92,14 @@ public class CircuitDAO {
         }
     }
 
+    /**
+     * Batch inserts the connectors (wires) of a circuit into the database.
+     *
+     * @param circuit   The circuit object containing the list of connectors.
+     * @param circuitId The database ID of the circuit these connectors belong to.
+     * @param conn      The active database connection to be used for the operation.
+     * @throws SQLException If a database access error occurs or the SQL execution fails.
+     */
     private void saveConnectors(
         Circuit circuit,
         long circuitId,
@@ -87,6 +121,16 @@ public class CircuitDAO {
         }
     }
 
+    /**
+     * Retrieves a list of circuits associated with a specific project.
+     * <p>
+     * Note: This method retrieves the circuit metadata (ID and name) but does not
+     * automatically load the internal components or connectors.
+     * </p>
+     *
+     * @param projectId The unique identifier of the project.
+     * @return A {@link List} of {@link Circuit} objects containing IDs and names.
+     */
     public List<Circuit> getCircuitsByProjectId(long projectId) {
         List<Circuit> circuits = new ArrayList<>();
         String sql = "SELECT id, name FROM circuits WHERE project_id = ?";
@@ -110,6 +154,12 @@ public class CircuitDAO {
         return circuits;
     }
 
+    /**
+     * Creates a new empty circuit record in the database.
+     *
+     * @param projectId The unique identifier of the project.
+     * @param name      The name to be assigned to the new circuit.
+     */
     public void createCircuit(long projectId, String name) {
         String sql = "INSERT INTO circuits(project_id, name) VALUES(?, ?)";
         try (
@@ -124,6 +174,17 @@ public class CircuitDAO {
         }
     }
 
+    /**
+     * Loads and reconstructs all components belonging to a specific circuit ID.
+     * <p>
+     * This method instantiates specific component classes (e.g., {@link And}, {@link Or},
+     * {@link Switch}) based on the 'type' column stored in the database.
+     * It also handles recursive loading for sub-circuits.
+     * </p>
+     *
+     * @param circuitId The unique identifier of the circuit to load components from.
+     * @return A {@link List} of fully constructed {@link Component} objects.
+     */
     public List<Component> loadComponents(long circuitId) {
         System.out.println(
             "Attempting to load components for the id: " + circuitId
@@ -174,6 +235,14 @@ public class CircuitDAO {
         return components;
     }
 
+    /**
+     * A record representing the raw data of a connection between two components.
+     *
+     * @param sourceUuid The UUID of the source component.
+     * @param sourcePin  The pin index on the source component.
+     * @param sinkUuid   The UUID of the destination (sink) component.
+     * @param sinkPin    The pin index on the destination component.
+     */
     public record ConnectionRecord(
         String sourceUuid,
         int sourcePin,
@@ -181,6 +250,12 @@ public class CircuitDAO {
         int sinkPin
     ) {}
 
+    /**
+     * Retrieves the raw connection data for a specific circuit.
+     *
+     * @param circuitId The unique identifier of the circuit.
+     * @return A {@link List} of {@link ConnectionRecord} objects representing the connections.
+     */
     public List<ConnectionRecord> loadConnections(long circuitId) {
         List<ConnectionRecord> connections = new ArrayList<>();
         String sql =
@@ -209,6 +284,19 @@ public class CircuitDAO {
         return connections;
     }
 
+    /**
+     * Updates an existing circuit in the database using a transactional approach.
+     * <p>
+     * This method performs the following steps:
+     * 1. Updates the circuit name.
+     * 2. Deletes all existing components associated with the circuit.
+     * 3. Deletes all existing connectors associated with the circuit.
+     * 4. Inserts the current state of components.
+     * 5. Inserts the current state of connectors.
+     * </p>
+     *
+     * @param circuit The {@link Circuit} object containing the updated data and ID.
+     */
     public void updateCircuit(Circuit circuit) {
         String sqlUpdateName = "UPDATE circuits SET name = ? WHERE id = ?";
         String sqlDeleteComps = "DELETE FROM components WHERE circuit_id = ?";
@@ -267,6 +355,15 @@ public class CircuitDAO {
         }
     }
 
+    /**
+     * Deletes a circuit from the database.
+     * <p>
+     * Due to database foreign key constraints (cascading deletes), removing the circuit
+     * usually removes associated components and connectors automatically.
+     * </p>
+     *
+     * @param id The unique identifier of the circuit to be deleted.
+     */
     public void deleteCircuit(long id) {
         String sql = "DELETE FROM circuits WHERE id = ?";
         try (

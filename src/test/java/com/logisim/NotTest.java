@@ -22,4 +22,11 @@ class NotTest {
         notGate.execute();
         assertTrue(notGate.getOutput());
     }
+
+    @Test
+    void initialState() {
+        // Default constructor sets input[0] to false, so output should be true
+        Not notGate = new Not();
+        assertTrue(notGate.getOutput());
+    }
 }

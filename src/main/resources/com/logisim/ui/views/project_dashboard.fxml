@@ -79,6 +79,12 @@
                           <String fx:value="button-secondary" />
                       </styleClass>
                   </Button>
+                  <Button
+                            fx:id="btnExport"
+                            text="Export Project"
+                            onAction="#handleExport"
+                            styleClass="button"
+                        />
                </children>
             </HBox>
          </children>
