@@ -1,0 +1,26 @@
+var classcom_1_1logisim_1_1domain_1_1components_1_1Component =
+[
+    [ "Component", "classcom_1_1logisim_1_1domain_1_1components_1_1Component.html#a775968f5e85d363bc1383ba0c560adab", null ],
+    [ "Component", "classcom_1_1logisim_1_1domain_1_1components_1_1Component.html#a10b4129320d671ca31cc9d57d7360c39", null ],
+    [ "execute", "classcom_1_1logisim_1_1domain_1_1components_1_1Component.html#a58b3596509190fd71a36ccedf5ab0d1e", null ],
+    [ "getInputs", "classcom_1_1logisim_1_1domain_1_1components_1_1Component.html#a335cc8cd4e198dc984013c378a7b5f15", null ],
+    [ "getName", "classcom_1_1logisim_1_1domain_1_1components_1_1Component.html#ab030735287add2a0482abfad1093bafe", null ],
+    [ "getOutput", "classcom_1_1logisim_1_1domain_1_1components_1_1Component.html#ac34d45368443fc7d6909d205915608af", null ],
+    [ "getOutputs", "classcom_1_1logisim_1_1domain_1_1components_1_1Component.html#abf05e1d8f67b1fd08e2f7aec28f82fef", null ],
+    [ "getPositionX", "classcom_1_1logisim_1_1domain_1_1components_1_1Component.html#a3b3c74ae3d90d84cc0937c591ee70277", null ],
+    [ "getPositionY", "classcom_1_1logisim_1_1domain_1_1components_1_1Component.html#ad3e7d13b89f15906ec4b06e17c5b38db", null ],
+    [ "getUuid", "classcom_1_1logisim_1_1domain_1_1components_1_1Component.html#a65138d14c731f317f2a3503a27779e93", null ],
+    [ "setInput", "classcom_1_1logisim_1_1domain_1_1components_1_1Component.html#a63e1e3ea8683cc5711fb55ef6fa789fb", null ],
+    [ "setInputs", "classcom_1_1logisim_1_1domain_1_1components_1_1Component.html#a3e5ea1277098c3041fa4b33603bbbbc9", null ],
+    [ "setName", "classcom_1_1logisim_1_1domain_1_1components_1_1Component.html#a37a0ef5880977c6b87d3cd1443fe076d", null ],
+    [ "setOutputs", "classcom_1_1logisim_1_1domain_1_1components_1_1Component.html#a05158fdb0cb2654cbc81e4e587905d4a", null ],
+    [ "setPositionX", "classcom_1_1logisim_1_1domain_1_1components_1_1Component.html#aaaadc52c61c97d7cf7c5e95b32e57b50", null ],
+    [ "setPositionY", "classcom_1_1logisim_1_1domain_1_1components_1_1Component.html#abb16a6b79fd21448c89c9bd3f66ccecc", null ],
+    [ "setUuid", "classcom_1_1logisim_1_1domain_1_1components_1_1Component.html#af014b6efd0893084b27b783601a6a866", null ],
+    [ "inputs", "classcom_1_1logisim_1_1domain_1_1components_1_1Component.html#a1cead3ff1488328e70b6daeb80870b71", null ],
+    [ "name", "classcom_1_1logisim_1_1domain_1_1components_1_1Component.html#a0c0e2b909b4fcc201e258c017f46fc49", null ],
+    [ "outputs", "classcom_1_1logisim_1_1domain_1_1components_1_1Component.html#affe7c49f784c9b05c23d4c2e9199f6a5", null ],
+    [ "positionX", "classcom_1_1logisim_1_1domain_1_1components_1_1Component.html#ac8840fbb30067ecbcafc75aa300e3ccf", null ],
+    [ "positionY", "classcom_1_1logisim_1_1domain_1_1components_1_1Component.html#aafb1cd2dee73e8e6546d77f2bf4e2bf6", null ],
+    [ "uuid", "classcom_1_1logisim_1_1domain_1_1components_1_1Component.html#a7a3ac5b9bf3f667363fa7b6cd2b12eee", null ]
+];
