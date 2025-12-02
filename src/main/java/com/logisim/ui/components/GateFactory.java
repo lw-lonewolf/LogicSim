@@ -20,20 +20,59 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
+/**
+ * A factory class responsible for creating and configuring the visual representations
+ * of logic components (gates, switches, bulbs, etc.) on the UI canvas.
+ * <p>
+ * This class handles:
+ * <ul>
+ *   <li>Loading the appropriate images for components.</li>
+ *   <li>Creating dynamic visual structures for sub-circuits.</li>
+ *   <li>Attaching input/output {@link Port}s to components.</li>
+ *   <li>Setting up event handlers for dragging, clicking, and context menus.</li>
+ * </ul>
+ * </p>
+ */
 public class GateFactory {
 
     private static ConnectionManager connectionManager;
     private static final double GATE_VISUAL_SIZE = 100.0;
 
+    /**
+     * Sets the {@link ConnectionManager} used to handle port interactions.
+     *
+     * @param cm The connection manager instance.
+     */
     public static void setConnectionManager(ConnectionManager cm) {
         connectionManager = cm;
     }
 
+    /**
+     * Helper class to store the offset during drag operations.
+     */
     private static class Delta {
 
         double x, y;
     }
 
+    /**
+     * Creates a visual component (StackPane) representing a logic gate or device.
+     * <p>
+     * This is the main entry point for adding components to the UI. It determines the specific
+     * type of component (Standard Gate, Switch, Bulb, or SubCircuit), creates the visual elements,
+     * attaches ports, and configures user interactions (dragging, toggling, deleting).
+     * </p>
+     *
+     * @param gateName       The string identifier for the gate type (used for image loading).
+     * @param x              The initial X coordinate on the canvas.
+     * @param y              The initial Y coordinate on the canvas.
+     * @param canvasPane     The parent pane where this component will be added (used for drag bounds/calculations).
+     * @param gridController The controller used for snapping the component to the grid.
+     * @param component      The underlying logical {@link Component} object.
+     * @param onDeleteAction A callback function to execute when the delete context menu item is clicked.
+     * @param onToggleAction A callback function to execute when a switch is toggled (can be null for non-switches).
+     * @return A {@link StackPane} containing the visual elements of the component.
+     */
     public static StackPane createGateWithHitBox(
         String gateName,
         double x,
@@ -108,6 +147,21 @@ public class GateFactory {
         return stack;
     }
 
+    /**
+     * Creates the specific visual representation for a {@link SubCircuitComponent}.
+     * <p>
+     * Unlike standard gates which use static images, sub-circuits are drawn dynamically
+     * as a rectangle with text labels and a variable number of input/output pins.
+     * </p>
+     *
+     * @param x              The initial X coordinate.
+     * @param y              The initial Y coordinate.
+     * @param subComp        The sub-circuit logical component.
+     * @param canvasPane     The canvas pane.
+     * @param gridController The grid controller for snapping.
+     * @param onDeleteAction The callback for deletion.
+     * @return A {@link StackPane} representing the sub-circuit.
+     */
     private static StackPane createSubCircuitVisual(
         double x,
         double y,
@@ -164,6 +218,18 @@ public class GateFactory {
         return stack;
     }
 
+    /**
+     * Configures the mouse interaction for {@link Switch} components.
+     * <p>
+     * Sets up a click handler that toggles the logical state of the switch, updates
+     * the visual image (on/off), and triggers the provided callback.
+     * </p>
+     *
+     * @param stack          The visual container of the switch.
+     * @param view           The ImageView to update.
+     * @param switchLogic    The underlying switch logical component.
+     * @param onToggleAction The callback to execute after toggling.
+     */
     private static void setupSwitchInteraction(
         StackPane stack,
         ImageView view,
@@ -190,6 +256,16 @@ public class GateFactory {
         });
     }
 
+    /**
+     * Dynamically adds {@link Port} objects to a component's visual stack.
+     * <p>
+     * This method calculates the physical positions of input pins (left side) and
+     * output pins (right side) based on the number of inputs/outputs defined in
+     * the component's logic.
+     * </p>
+     *
+     * @param stack The component's visual container.
+     */
     private static void addPortsToGate(StackPane stack) {
         Component comp = (Component) stack.getUserData();
         int inputCount = comp.getInputs().length;
@@ -222,6 +298,11 @@ public class GateFactory {
         }
     }
 
+    /**
+     * Binds mouse click events on ports to the {@link ConnectionManager}.
+     *
+     * @param port The port to configure.
+     */
     private static void configurePortEvents(Port port) {
         port.setOnMouseClicked(e -> {
             if (connectionManager != null) {
@@ -231,6 +312,18 @@ public class GateFactory {
         });
     }
 
+    /**
+     * Adds drag-and-drop functionality and a context menu for deletion to the component.
+     * <p>
+     * Dragging snaps the component to the grid defined by the {@link GridController}.
+     * The context menu allows removing the component via the {@code onDeleteAction}.
+     * </p>
+     *
+     * @param node           The visual component to make interactive.
+     * @param canvasPane     The pane containing the component.
+     * @param gridController The controller for grid snapping calculations.
+     * @param onDeleteAction The callback to execute on deletion.
+     */
     private static void makeDraggableandDeletable(
         StackPane node,
         Pane canvasPane,
@@ -293,6 +386,15 @@ public class GateFactory {
         });
     }
 
+    /**
+     * Updates the visual state of a component (Switch or Bulb) based on its logical state.
+     * <p>
+     * This is typically called during or after circuit simulation to reflect signal changes
+     * (e.g., turning a bulb on or off).
+     * </p>
+     *
+     * @param visualGate The visual {@link StackPane} of the component.
+     */
     public static void refreshComponentState(StackPane visualGate) {
         Component comp = (Component) visualGate.getUserData();
         if (

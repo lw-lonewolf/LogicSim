@@ -36,13 +36,7 @@
                </image>
             </ImageView>
 
-            <Label text="LOGISIM CLONE" styleClass="title-label" />
-
-            <Label text="Database Edition" styleClass="subtitle-label">
-               <VBox.margin>
-                  <Insets top="-15.0" />
-               </VBox.margin>
-            </Label>
+            <Label text="LOGISIM" styleClass="title-label" />
 
             <Line endX="200.0" styleClass="separator-line">
                <VBox.margin>
@@ -82,11 +76,12 @@
                     onAction="#handleDeleteProject"
                     text="Delete Project"
                 >
-                           <styleClass>
+                        <styleClass>
                               <String fx:value="button" />
                               <String fx:value="button-danger" />
-                           </styleClass>
-                        </Button>
+                        </styleClass>
+            </Button>
+
          </children>
       </VBox>
 

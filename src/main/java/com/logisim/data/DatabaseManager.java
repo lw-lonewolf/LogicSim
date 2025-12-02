@@ -7,16 +7,48 @@ import java.sql.Statement;
 
 // FILE USES A SINGLETON DESIGN PATTERN
 
+/**
+ * Manages the SQLite database connection and schema initialization for the application.
+ * <p>
+ * This class implements the Singleton design pattern to ensure a centralized point
+ * of access for database operations. It handles the creation of the database file
+ * (stored in the user's home directory) and initializes the necessary tables
+ * if they do not already exist.
+ * </p>
+ */
 public class DatabaseManager {
 
+    /**
+     * The JDBC connection URL string pointing to the SQLite database file
+     * located in the user's home directory.
+     */
     private static final String url =
         "jdbc:sqlite:" + System.getProperty("user.home") + "/logisim_data.db";
+
+    /**
+     * The single instance of the DatabaseManager class.
+     */
     private static DatabaseManager instance;
 
+    /**
+     * Private constructor to enforce the Singleton design pattern.
+     * <p>
+     * When instantiated, it automatically attempts to create the necessary
+     * database tables.
+     * </p>
+     */
     private DatabaseManager() {
         createTables();
     }
 
+    /**
+     * Retrieves the singleton instance of the DatabaseManager.
+     * <p>
+     * If the instance does not exist, it is created.
+     * </p>
+     *
+     * @return The single instance of {@link DatabaseManager}.
+     */
     public static DatabaseManager getInstance() {
         if (instance == null) {
             instance = new DatabaseManager();
@@ -24,10 +56,28 @@ public class DatabaseManager {
         return instance;
     }
 
+    /**
+     * Establishes and returns a new connection to the SQLite database.
+     *
+     * @return A {@link Connection} object connected to the database.
+     * @throws SQLException If a database access error occurs.
+     */
     public Connection getConnection() throws SQLException {
         return DriverManager.getConnection(url);
     }
 
+    /**
+     * Initializes the database schema by creating required tables if they do not exist.
+     * <p>
+     * The following tables are created:
+     * <ul>
+     *   <li><b>projects</b>: Stores project metadata.</li>
+     *   <li><b>circuits</b>: Stores circuits linked to projects.</li>
+     *   <li><b>components</b>: Stores individual components within circuits.</li>
+     *   <li><b>connectors</b>: Stores wiring connections between components.</li>
+     * </ul>
+     * </p>
+     */
     private void createTables() {
         String sqlProjects = """
             CREATE TABLE IF NOT EXISTS projects(

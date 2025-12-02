@@ -50,6 +50,14 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+/**
+ * The primary controller for the Circuit Editor view.
+ * <p>
+ * This class manages the user interface interaction for creating, editing, and simulating
+ * digital logic circuits. It handles component placement, wiring, database persistence,
+ * and navigation within a project.
+ * </p>
+ */
 public class MainViewController {
 
     @FXML
@@ -77,6 +85,14 @@ public class MainViewController {
     private Circuit currentCircuit;
     private CircuitDAO circuitDAO = new CircuitDAO();
 
+    /**
+     * Refreshes the sidebar with buttons to insert other circuits from the current project.
+     * <p>
+     * This allows the user to use other existing circuits as "Sub-Circuits" within
+     * the current design. The method filters out the current circuit to prevent
+     * recursive inclusion.
+     * </p>
+     */
     private void refreshSubCircuitSidebar() {
         if (subCircuitContainer == null) {
             System.err.println(
@@ -130,6 +146,11 @@ public class MainViewController {
         );
     }
 
+    /**
+     * Instantiates a sub-circuit component and places it on the canvas.
+     *
+     * @param template The {@link Circuit} metadata object representing the circuit to import.
+     */
     private void spawnSubCircuit(Circuit template) {
         Circuit innerLogic = loadFullCircuitFromDB(template.getId());
         innerLogic.setName(template.getName());
@@ -162,6 +183,12 @@ public class MainViewController {
         System.out.println("Spawned SubCircuit: " + template.getName());
     }
 
+    /**
+     * Navigates the user back to the Project Dashboard.
+     * <p>
+     * This method loads the dashboard FXML and passes the current project context back to it.
+     * </p>
+     */
     @FXML
     private void handleBackToDashboard() {
         // 1. Optional: Auto-save check or confirmation could go here
@@ -194,6 +221,12 @@ public class MainViewController {
         }
     }
 
+    /**
+     * Loads a complete circuit model from the database to be used as a sub-circuit logic container.
+     *
+     * @param id The database ID of the circuit to load.
+     * @return A fully constructed {@link Circuit} object with components and logic connections.
+     */
     public Circuit loadFullCircuitFromDB(long id) {
         Circuit c = new Circuit();
         c.setId(id);
@@ -238,6 +271,9 @@ public class MainViewController {
         return c;
     }
 
+    /**
+     * Saves the current state of the circuit (layout, components, and connections) to the database.
+     */
     @FXML
     private void handleSave() {
         if (currentCircuit == null) {
@@ -269,6 +305,13 @@ public class MainViewController {
         }
     }
 
+    /**
+     * Triggers a simulation cycle for the current circuit.
+     * <p>
+     * Updates the logical state of all components and refreshes the visual state
+     * (e.g., bulb images) to reflect the new logic values.
+     * </p>
+     */
     @FXML
     private void handleRun() {
         if (currentCircuit == null) return;
@@ -288,6 +331,12 @@ public class MainViewController {
         System.out.println("Simulation Complete.");
     }
 
+    /**
+     * Displays a generic information alert dialog.
+     *
+     * @param title   The title of the dialog window.
+     * @param content The message content to display.
+     */
     private void showAlert(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
@@ -310,6 +359,13 @@ public class MainViewController {
         alert.showAndWait();
     }
 
+    /**
+     * Performs a combinatorial logic analysis of the circuit.
+     * <p>
+     * Identifies input switches and output bulbs, generates a truth table,
+     * and derives a boolean expression. Results are shown in a new window.
+     * </p>
+     */
     @FXML
     public void handleAnalyze() {
         if (currentCircuit == null) return;
@@ -368,6 +424,14 @@ public class MainViewController {
         }
     }
 
+    /**
+     * Helper method to display the analysis results in a dedicated window.
+     *
+     * @param rawData    The 2D boolean array representing the truth table.
+     * @param headers    The list of column headers (Input names and Output names).
+     * @param expression The derived boolean expression string.
+     */
+    @SuppressWarnings("deprecation")
     private void showAnalysisWindow(
         boolean[][] rawData,
         List<String> headers,
@@ -440,6 +504,13 @@ public class MainViewController {
         stage.show();
     }
 
+    /**
+     * Initializes the controller.
+     * <p>
+     * Sets up the grid controller, connection manager, event listeners for resizing,
+     * and assigns action handlers to the component toolbar buttons.
+     * </p>
+     */
     @FXML
     public void initialize() {
         gridCanvas.widthProperty().bind(canvasPane.widthProperty());
@@ -677,6 +748,16 @@ public class MainViewController {
         this.currentProject = currentProject;
     }
 
+    /**
+     * Initializes the view with a specific Project and Circuit context.
+     * <p>
+     * This method loads the circuit's existing components and connections from the database,
+     * reconstructs their visual representations on the canvas, and refreshes the sidebar.
+     * </p>
+     *
+     * @param project The {@link Project} containing the circuit.
+     * @param circuit The {@link Circuit} to be edited.
+     */
     public void setContext(Project project, Circuit circuit) {
         this.currentProject = project;
         this.currentCircuit = circuit;
@@ -753,6 +834,14 @@ public class MainViewController {
         refreshSubCircuitSidebar();
     }
 
+    /**
+     * Handles the deletion of a component from the canvas and circuit logic.
+     * <p>
+     * Also removes any wires attached to the deleted component.
+     * </p>
+     *
+     * @param visualGate The visual {@link StackPane} element to be removed.
+     */
     private void handleDeleteGate(StackPane visualGate) {
         Component comp = (Component) visualGate.getUserData();
         if (currentCircuit != null && comp != null) {
@@ -779,6 +868,14 @@ public class MainViewController {
         canvasPane.getChildren().remove(visualGate);
     }
 
+    /**
+     * Callback handler for toggling a switch component.
+     * <p>
+     * Triggers a simulation run to propagate the new switch state through the circuit.
+     * </p>
+     *
+     * @param visualGate The visual element of the switch that was toggled.
+     */
     private void handleToggleSwitch(StackPane visualGate) {
         handleRun();
     }
@@ -789,6 +886,7 @@ public class MainViewController {
      * @param gate The StackPane representing the gate
      * @param isInput True if we want an input port, False for output
      * @param index The index (e.g., 0 for top input, 1 for bottom input)
+     * @return The {@link Port} object if found, otherwise null.
      */
     private Port findPort(StackPane gate, boolean isInput, int index) {
         int currentInputIndex = 0;

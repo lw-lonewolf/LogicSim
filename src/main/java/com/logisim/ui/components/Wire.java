@@ -9,11 +9,31 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polyline;
 
+/**
+ * Represents a visual wire connection between two {@link Port}s on the circuit canvas.
+ * <p>
+ * This class extends {@link Polyline} to render a physical line representing the logic
+ * flow between components. It implements an orthogonal (Manhattan-style) routing algorithm
+ * to draw lines with right angles. The wire automatically updates its geometry whenever
+ * the connected components are moved.
+ * </p>
+ */
 public class Wire extends Polyline {
 
     private final Port source;
     private final Port sink;
 
+    /**
+     * Constructs a new Wire connecting a source port to a sink port.
+     * <p>
+     * This constructor initializes the wire's visual properties (color, width),
+     * attaches layout listeners to the parent components of the ports to handle movement,
+     * and sets up user interactions.
+     * </p>
+     *
+     * @param source The {@link Port} acting as the signal source.
+     * @param sink   The {@link Port} acting as the signal sink.
+     */
     public Wire(Port source, Port sink) {
         this.source = source;
         this.sink = sink;
@@ -37,6 +57,19 @@ public class Wire extends Polyline {
         setupInteractions();
     }
 
+    /**
+     * Recalculates the geometric path of the wire based on the current positions of the ports.
+     * <p>
+     * This method computes the absolute coordinates of the source and sink ports relative
+     * to their parent container. It then generates a 4-point path:
+     * <ol>
+     *   <li>Start point (Source coordinates).</li>
+     *   <li>Midpoint 1 (Horizontal movement to the midpoint between X coordinates).</li>
+     *   <li>Midpoint 2 (Vertical movement to the target Y coordinate).</li>
+     *   <li>End point (Sink coordinates).</li>
+     * </ol>
+     * </p>
+     */
     private void updateWire() {
         StackPane sourceGate = source.getParentGate();
         StackPane sinkGate = sink.getParentGate();
@@ -59,6 +92,16 @@ public class Wire extends Polyline {
         points.addAll(startX, startY, midX, startY, midX, endY, endX, endY);
     }
 
+    /**
+     * Configures mouse interactions for the wire.
+     * <p>
+     * Adds handlers for:
+     * <ul>
+     *   <li><b>Hover:</b> Increases stroke width to indicate focus.</li>
+     *   <li><b>Context Menu:</b> Provides options to change the wire color (Red, Blue, Green, etc.) or delete the wire.</li>
+     * </ul>
+     * </p>
+     */
     private void setupInteractions() {
         setOnMouseEntered(e -> {
             setStrokeWidth(6);
@@ -109,10 +152,20 @@ public class Wire extends Polyline {
         });
     }
 
+    /**
+     * Retrieves the source port of this wire.
+     *
+     * @return The {@link Port} where the signal originates.
+     */
     public Port getSource() {
         return source;
     }
 
+    /**
+     * Retrieves the sink port of this wire.
+     *
+     * @return The {@link Port} where the signal terminates.
+     */
     public Port getSink() {
         return sink;
     }
