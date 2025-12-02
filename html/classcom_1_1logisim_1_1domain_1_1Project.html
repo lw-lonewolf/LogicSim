@@ -100,9 +100,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a68b121d1ccdc83f266ab356b109129f7" id="r_a68b121d1ccdc83f266ab356b109129f7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a68b121d1ccdc83f266ab356b109129f7">save</a> ()</td></tr>
 <tr class="memdesc:a68b121d1ccdc83f266ab356b109129f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Persists the current project state to the database.  <br /></td></tr>
 <tr class="memitem:ac676d4558d303f3fa6aa206b2f446c3b" id="r_ac676d4558d303f3fa6aa206b2f446c3b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac676d4558d303f3fa6aa206b2f446c3b">load</a> ()</td></tr>
-<tr class="memdesc:ac676d4558d303f3fa6aa206b2f446c3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads the project data.  <br /></td></tr>
+<tr class="memdesc:ac676d4558d303f3fa6aa206b2f446c3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads the project data from the database.  <br /></td></tr>
 <tr class="memitem:adf8b9340fae1a0b7af1e8e591a09f7f4" id="r_adf8b9340fae1a0b7af1e8e591a09f7f4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adf8b9340fae1a0b7af1e8e591a09f7f4">export</a> ()</td></tr>
-<tr class="memdesc:adf8b9340fae1a0b7af1e8e591a09f7f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Exports the project to an external format.  <br /></td></tr>
+<tr class="memdesc:adf8b9340fae1a0b7af1e8e591a09f7f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Exports the project's circuits to JPG image files.  <br /></td></tr>
 <tr class="memitem:a643e01e407b6093a8d0f74342a2820c1" id="r_a643e01e407b6093a8d0f74342a2820c1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a643e01e407b6093a8d0f74342a2820c1">Project</a> (String <a class="el" href="#a38b13b6f4d3dcb2a428c474e58ec9a1c">name</a>)</td></tr>
 <tr class="memdesc:a643e01e407b6093a8d0f74342a2820c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a new <a class="el" href="classcom_1_1logisim_1_1domain_1_1Project.html" title="Represents a project within the Logisim application.">Project</a> with a specified name.  <br /></td></tr>
 <tr class="memitem:a15eabe48aa246fc17766523f4a55bcf0" id="r_a15eabe48aa246fc17766523f4a55bcf0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a15eabe48aa246fc17766523f4a55bcf0">Project</a> (long <a class="el" href="#af70962707bd530b2ff38f332e3dcbf7b">id</a>, String <a class="el" href="#a38b13b6f4d3dcb2a428c474e58ec9a1c">name</a>)</td></tr>
@@ -239,8 +239,8 @@ List&lt; <a class="el" href="classcom_1_1logisim_1_1domain_1_1Circuit.html">Circ
       </table>
 </div><div class="memdoc">
 
-<p>Exports the project to an external format. </p>
-<p><b>Note:</b> This method is currently not implemented. </p>
+<p>Exports the project's circuits to JPG image files. </p>
+<p>This method renders the circuit components and wires onto a <code><a class="el" href="">BufferedImage</a></code>. It simulates the visual layout used in the UI (approx 100x100 components) and draws orthogonal lines for wires. </p>
 
 </div>
 </div>
@@ -339,8 +339,8 @@ List&lt; <a class="el" href="classcom_1_1logisim_1_1domain_1_1Circuit.html">Circ
       </table>
 </div><div class="memdoc">
 
-<p>Loads the project data. </p>
-<p><b>Note:</b> This method is currently not implemented. </p>
+<p>Loads the project data from the database. </p>
+<p>This method refreshes the list of circuits associated with this project ID. It uses <code><a class="el" href="classcom_1_1logisim_1_1data_1_1CircuitDAO.html">CircuitDAO</a></code> to fetch components AND connections, reconstructing the full logical graph of the circuit. </p>
 
 </div>
 </div>

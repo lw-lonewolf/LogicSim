@@ -112,10 +112,14 @@ Private Member Functions</h2></td></tr>
 <tr class="memdesc:a0900eb6fbb7050a11f23a5016e8b67fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handles the "New Circuit" button action.  <br /></td></tr>
 <tr class="memitem:a00dc62c350a940cb5031271525af4e86" id="r_a00dc62c350a940cb5031271525af4e86"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a00dc62c350a940cb5031271525af4e86">handleOpenCircuit</a> ()</td></tr>
 <tr class="memdesc:a00dc62c350a940cb5031271525af4e86"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handles the "Open Circuit" button action.  <br /></td></tr>
+<tr class="memitem:a978f719234a7d47eec4e45d8673b87bc" id="r_a978f719234a7d47eec4e45d8673b87bc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a978f719234a7d47eec4e45d8673b87bc">handleExport</a> ()</td></tr>
+<tr class="memdesc:a978f719234a7d47eec4e45d8673b87bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handles the "Export Project" button action.  <br /></td></tr>
 <tr class="memitem:ac2fe89e2bf6e511dd99772b307f6a7f4" id="r_ac2fe89e2bf6e511dd99772b307f6a7f4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac2fe89e2bf6e511dd99772b307f6a7f4">handleBack</a> ()</td></tr>
 <tr class="memdesc:ac2fe89e2bf6e511dd99772b307f6a7f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handles the "Back" button action.  <br /></td></tr>
 <tr class="memitem:aef555a08df27bdbe20f5aedeaaf3f3d9" id="r_aef555a08df27bdbe20f5aedeaaf3f3d9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aef555a08df27bdbe20f5aedeaaf3f3d9">openMainEditor</a> (<a class="el" href="classcom_1_1logisim_1_1domain_1_1Circuit.html">Circuit</a> circuit)</td></tr>
 <tr class="memdesc:aef555a08df27bdbe20f5aedeaaf3f3d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transitions the scene to the Main <a class="el" href="classcom_1_1logisim_1_1domain_1_1Circuit.html" title="Represents a digital logic circuit consisting of components and connections.">Circuit</a> Editor.  <br /></td></tr>
+<tr class="memitem:a72119f95ab7474e3a80dd417d09eb714" id="r_a72119f95ab7474e3a80dd417d09eb714"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a72119f95ab7474e3a80dd417d09eb714">styleDialog</a> (DialogPane dialogPane)</td></tr>
+<tr class="memdesc:a72119f95ab7474e3a80dd417d09eb714"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies the application CSS styles to a dialog pane.  <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pri-attribs" class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
@@ -127,6 +131,8 @@ ListView&lt; <a class="el" href="classcom_1_1logisim_1_1domain_1_1Circuit.html">
 Button&#160;</td><td class="memItemRight" valign="bottom"><b>btnOpen</b></td></tr>
 <tr class="memitem:a56397bfaba89455311d2a852d2bd8b2d" id="r_a56397bfaba89455311d2a852d2bd8b2d"><td class="memItemLeft" align="right" valign="top"><a id="a56397bfaba89455311d2a852d2bd8b2d" name="a56397bfaba89455311d2a852d2bd8b2d"></a>
 Button&#160;</td><td class="memItemRight" valign="bottom"><b>btnDelete</b></td></tr>
+<tr class="memitem:af5e18bd3a8a249b8bcfe9b73221fbe66" id="r_af5e18bd3a8a249b8bcfe9b73221fbe66"><td class="memItemLeft" align="right" valign="top"><a id="af5e18bd3a8a249b8bcfe9b73221fbe66" name="af5e18bd3a8a249b8bcfe9b73221fbe66"></a>
+Button&#160;</td><td class="memItemRight" valign="bottom"><b>btnExport</b></td></tr>
 <tr class="memitem:af38dc8cc99a0843908d065208581f69d" id="r_af38dc8cc99a0843908d065208581f69d"><td class="memItemLeft" align="right" valign="top"><a id="af38dc8cc99a0843908d065208581f69d" name="af38dc8cc99a0843908d065208581f69d"></a>
 <a class="el" href="classcom_1_1logisim_1_1domain_1_1Project.html">Project</a>&#160;</td><td class="memItemRight" valign="bottom"><b>currentProject</b></td></tr>
 <tr class="memdesc:af38dc8cc99a0843908d065208581f69d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The currently active project being managed in this dashboard. <br /></td></tr>
@@ -136,7 +142,7 @@ final <a class="el" href="classcom_1_1logisim_1_1data_1_1CircuitDAO.html">Circui
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Controller class for the <a class="el" href="classcom_1_1logisim_1_1domain_1_1Project.html" title="Represents a project within the Logisim application.">Project</a> Dashboard view. </p>
-<p>This class manages the UI that appears after a project is selected or created. It displays a list of circuits contained within the current project and provides functionality to open existing circuits, create new ones, or delete them. </p>
+<p>This class manages the UI that appears after a project is selected or created. It displays a list of circuits contained within the current project and provides functionality to open existing circuits, create new ones, delete them, or export the entire project. </p>
 </div><a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
 <a id="ac2fe89e2bf6e511dd99772b307f6a7f4" name="ac2fe89e2bf6e511dd99772b307f6a7f4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac2fe89e2bf6e511dd99772b307f6a7f4">&#9670;&#160;</a></span>handleBack()</h2>
@@ -191,6 +197,34 @@ final <a class="el" href="classcom_1_1logisim_1_1data_1_1CircuitDAO.html">Circui
 
 <p>Handles the "Delete Circuit" button action. </p>
 <p>Prompts the user with a confirmation dialog. If confirmed, the selected circuit is removed from the database, and the list is refreshed. </p>
+
+</div>
+</div>
+<a id="a978f719234a7d47eec4e45d8673b87bc" name="a978f719234a7d47eec4e45d8673b87bc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a978f719234a7d47eec4e45d8673b87bc">&#9670;&#160;</a></span>handleExport()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void com.logisim.ui.controllers.ProjectDashboardController.handleExport </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Handles the "Export Project" button action. </p>
+<p>Reloads the project data to ensure the latest state is captured, then executes the project-wide export to JPG function. Displays a success message upon completion. </p>
 
 </div>
 </div>
@@ -352,6 +386,39 @@ final <a class="el" href="classcom_1_1logisim_1_1data_1_1CircuitDAO.html">Circui
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">project</td><td>The <code><a class="el" href="classcom_1_1logisim_1_1domain_1_1Project.html">Project</a></code> object to display and manage. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a72119f95ab7474e3a80dd417d09eb714" name="a72119f95ab7474e3a80dd417d09eb714"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a72119f95ab7474e3a80dd417d09eb714">&#9670;&#160;</a></span>styleDialog()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void com.logisim.ui.controllers.ProjectDashboardController.styleDialog </td>
+          <td>(</td>
+          <td class="paramtype">DialogPane</td>          <td class="paramname"><span class="paramname"><em>dialogPane</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Applies the application CSS styles to a dialog pane. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dialogPane</td><td>The dialog pane to style. </td></tr>
   </table>
   </dd>
 </dl>

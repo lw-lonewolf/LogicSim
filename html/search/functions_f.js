@@ -35,7 +35,7 @@ var searchData=
   ['simulate_32',['simulate',['../classcom_1_1logisim_1_1domain_1_1Circuit.html#a3876f02ebcee9c5035e99dbe5f15137f',1,'com::logisim::domain::Circuit']]],
   ['snap_33',['snap',['../classcom_1_1logisim_1_1ui_1_1controllers_1_1GridController.html#ae7a2a268cfa2ae9d52636ddd374e4ac7',1,'com::logisim::ui::controllers::GridController']]],
   ['spawnsubcircuit_34',['spawnSubCircuit',['../classcom_1_1logisim_1_1ui_1_1controllers_1_1MainViewController.html#ac4d944fcbb560383b0a0b909a91a6a7c',1,'com::logisim::ui::controllers::MainViewController']]],
-  ['styledialog_35',['styleDialog',['../classcom_1_1logisim_1_1ui_1_1controllers_1_1StartScreenController.html#a9469ae6ce142b52343cc1fe7b88c08d3',1,'com::logisim::ui::controllers::StartScreenController']]],
+  ['styledialog_35',['styleDialog',['../classcom_1_1logisim_1_1ui_1_1controllers_1_1ProjectDashboardController.html#a72119f95ab7474e3a80dd417d09eb714',1,'com.logisim.ui.controllers.ProjectDashboardController.styleDialog()'],['../classcom_1_1logisim_1_1ui_1_1controllers_1_1StartScreenController.html#a9469ae6ce142b52343cc1fe7b88c08d3',1,'com.logisim.ui.controllers.StartScreenController.styleDialog()']]],
   ['subcircuitcomponent_36',['SubCircuitComponent',['../classcom_1_1logisim_1_1domain_1_1components_1_1SubCircuitComponent.html#a4f3b7f6a9c928d5b6c03b802fad3f71e',1,'com::logisim::domain::components::SubCircuitComponent']]],
   ['switch_37',['Switch',['../classcom_1_1logisim_1_1domain_1_1components_1_1Switch.html#a33d0d285ee4f37ba5c5ced8e81384286',1,'com::logisim::domain::components::Switch']]]
 ];
